@@ -12,6 +12,6 @@ To address these questions, we propose building a data visualisation app that al
 
 ## Description
 
-We will be visualising 2167 tsunami instances (out of the possible 2767 instances). While the dataset has many associated variables, the key variables are as follows. Each tsunami instance has time information (`Year`, `Mo`, `Dy`, `Hr`, `Mn`, `Sec`), geographical position (`Country`, `Location Name`, `Latitiude`, `Longitude`), hydrological condition (`Maximum Water Height`, `Earthquake Magnitude`), and damage (`Total Deaths`, `Total Injuries`, `Total Missing`, `Total Damage ($Mil)`, `Total Houses Destroyed`).
+We will be visualizing 2167 tsunami instances (out of the possible 2767 instances). While the dataset has many associated variables, the key variables are as follows. Each tsunami instance has time information (`Year`, `Mo`, `Dy`, `Hr`, `Mn`, `Sec`), geographical position (`Country`, `Location Name`, `Latitude`, `Longitude`), hydrological condition (`Maximum Water Height`, `Earthquake Magnitude`), and damage (`Total Deaths`, `Total Injuries`, `Total Missing`, `Total Damage ($Mil)`, `Total Houses Destroyed`).
 
 ## Research Questions and Usage Scenarios
