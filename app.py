@@ -5,4 +5,5 @@ server = app.server
 
 app.layout = html.Div("Hello world!")
 
-app.run_server()
+if __name__ == '__main__':
+    app.run_server(debug=True)
