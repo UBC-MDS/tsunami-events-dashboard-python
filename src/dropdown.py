@@ -32,14 +32,14 @@ def plot_bar(year_slider):
         )
         .mark_bar()
         .encode(
-            y=alt.Y("country", sort="-x", title="Country"),
-            x=alt.X(tsunami_intensity, title="Tsunami Intensity"),
+            y=alt.Y("country", title="Country"),
+            x=alt.X("tsunami_intensity", title="Tsunami Intensity"),
             color=alt.Color(
                 "country",
                 sort=alt.EncodingSortField("country", order="descending"),
                 title="Country",
             ),
-            tooltip=("name:O", "tsunami_intensity:Q"),
+            tooltip=("location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"),
         )
         .configure_axis(labelFontSize=12, titleFontSize=14)
         .configure_title(fontSize=15)
