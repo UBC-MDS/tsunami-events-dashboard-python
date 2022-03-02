@@ -8,14 +8,6 @@ import altair as alt
 
 tsunami_df = pd.read_csv("data/processed/tsunami-events.csv")
 
-bar = html.Iframe(
-    id="bar",
-    style={
-        "border-width": "0",
-        "width": "100%",
-        "height": "400px",
-    })
-
 app = Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
 
 app.layout = html.Div([
@@ -24,7 +16,7 @@ app.layout = html.Div([
                 style={
                     "border-width": "0",
                     "width": "100%",
-                    "height": "400px"})
+                    "height": "400px"})])
         
 @app.callback(
     Output("bar", "srcDoc"),
