@@ -7,14 +7,14 @@ df = pd.read_csv("data/processed/tsunami-events.csv")
 df.columns.values[0] = 'tsunami_instance'
 
 def select_year(ymin, ymax):
-    return df_all.loc[(df_all['year'] > ymin) & (df_all['year'] < ymax)]
+    return df_all.loc[(df['year'] > ymin) & (df['year'] < ymax)]
 
 def plot_altair(df):
     chart = alt.Chart(df).mark_bar().encode(
         x=alt.X('tsunami_intensity:Q'),
         y=alt.Y('tsunami_instance:N'),
         color = alt.Color('country:O'),
-        tooltip=("location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"))
+        tooltip=("country:O, ""location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"))
     return chart.to_html()
 
 
@@ -34,11 +34,12 @@ app.layout = html.Div([
                     )])
 
 
-# @ app.callback(
-#     Output('bar', 'srcDoc'),
-#     Input('my-range-slider', 'value'))
-# def update_output(value):
-#     return plot_altair(value[0], value[1])
+@ app.callback(
+    Output('bar', 'srcDoc'),
+    Input('my-range-slider', 'value'))
+def update_output(value):
+    df_daterange = select_year(value[0], value[1])
+    plot_altair(df_daterange)
 
 
 if __name__ == '__main__':
