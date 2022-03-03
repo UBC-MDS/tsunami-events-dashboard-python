@@ -39,6 +39,8 @@ app.layout = html.Div([
     Input('my-range-slider', 'value'))
 def update_output(value):
     df_daterange = select_year(value[0], value[1])
+    df_daterange = df_daterange.sort_values(by=['tsunami_intensity'])
+    df_daterange = df_daterange[0:16]
     return plot_altair(df_daterange)
 
 
