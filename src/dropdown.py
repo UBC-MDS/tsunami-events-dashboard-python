@@ -3,21 +3,15 @@ from dash import Dash, dcc, html, Input, Output
 from vega_datasets import data
 import pandas as pd
 
-data = pd.read_csv("data/processed/tsunami-events.csv")
-df_all = pd.DataFrame(data.groupby("year").size()).rename(
-    columns={0: "tsunami_count"}).reset_index()
-
-df = pd.DataFrame(data.groupby(
-    ["year", "country"]).size()).rename(columns={0: "tsunami_count"}).reset_index()
-
+df = pd.read_csv("data/processed/tsunami-events.csv")
 
 def select_year(ymin, ymax):
     return df_all.loc[(df_all['year'] > ymin) & (df_all['year'] < ymax)]
 
 def plot_altair(df):
     chart = alt.Chart(df).mark_bar().encode(
-        x=alt.X('tsunami_intensity:Q'),
-        y=alt.Y('country:O'),
+        x=alt.X('tsunami_intensity'),
+        y=alt.Y('country'),
         color = alt.Color('country:O'),
         tooltip=("location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"))
     return chart.to_html()
