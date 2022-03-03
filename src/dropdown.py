@@ -11,8 +11,8 @@ def select_year(ymin, ymax):
 
 def plot_altair(df):
     chart = alt.Chart(df).mark_bar().encode(
-        x=alt.X('tsunami_intensity'),
-        y=alt.Y('tsunami_count'),
+        x=alt.X('tsunami_intensity:Q'),
+        y=alt.Y('tsunami_count:N'),
         color = alt.Color('country:O'),
         tooltip=("location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"))
     return chart.to_html()
