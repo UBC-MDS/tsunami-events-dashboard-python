@@ -9,8 +9,8 @@ df.columns.values[0] = 'tsunami_instance'
 def select_year(ymin, ymax):
     return df_all.loc[(df['year'] > ymin) & (df['year'] < ymax)]
 
-def plot_altair(df):
-    chart = alt.Chart(df).mark_bar().encode(
+def plot_altair(df_daterange):
+    chart = alt.Chart(df_daterange).mark_bar().encode(
         x=alt.X('tsunami_intensity:Q'),
         y=alt.Y('tsunami_instance:N'),
         color = alt.Color('country:O'),
