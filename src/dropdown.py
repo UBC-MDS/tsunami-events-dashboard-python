@@ -4,7 +4,7 @@ from vega_datasets import data
 import pandas as pd
 
 df = pd.read_csv("data/processed/tsunami-events.csv")
-df = pd.DataFrame(df.rename(columns={0: "tsunami_count"}))
+df.columns.values[0] = 'tsunami_instance'
 
 def select_year(ymin, ymax):
     return df_all.loc[(df_all['year'] > ymin) & (df_all['year'] < ymax)]
@@ -12,7 +12,7 @@ def select_year(ymin, ymax):
 def plot_altair(df):
     chart = alt.Chart(df).mark_bar().encode(
         x=alt.X('tsunami_intensity:Q'),
-        y=alt.Y('tsunami_count:N'),
+        y=alt.Y('tsunami_instance:N'),
         color = alt.Color('country:O'),
         tooltip=("location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"))
     return chart.to_html()
