@@ -10,8 +10,8 @@ import dash_bootstrap_components as dbc
 # (5) Second order interaction: dependent on year and highlight by country. 
 
 # Read in Tsunami Data.
-tsunami = pd.read_tsv('data/util/tsunami.tsv')
-
+tsunami = pd.read_csv('data/processed/tsunami-events.csv')
+tsunami_prep = tsunami.groupby(['year', 'month', 'latitude', 'longitude'])
 
 # Creation of base world map
 # If we have time to finesse our plot, see this website: https://towardsdatascience.com/make-beautiful-spatial-visualizations-with-plotly-and-mapbox-fd5a638d6b3c
@@ -20,7 +20,7 @@ world_map = alt.topo_feature(data.world_110m.url, 'countries')
 
 map = alt.Chart(world_map).mark_geoshape(
     fill='#2a1d0c', stroke='#706545', strokeWidth=1).transform_lookup(
-    lookup = 'id',
+    lookup = 'id', # do we have an id column
     from_ = alt.LookupData(tsunami, 'id', ['latitude', 'longitude']
 )).encode(
     color = 'earthquake_magnitude:Q'
