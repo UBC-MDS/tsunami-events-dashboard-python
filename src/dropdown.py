@@ -1,52 +1,48 @@
-from itertools import count
-import dash
-import dash_bootstrap_components as dbc
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
 import altair as alt
+from dash import Dash, dcc, html, Input, Output
+from vega_datasets import data
+import pandas as pd
 
-tsunami_df = pd.read_csv("data/processed/tsunami-events.csv")
+data = pd.read_csv("data/processed/tsunami-events.csv")
+df_all = pd.DataFrame(data.groupby("year").size()).rename(
+    columns={0: "tsunami_count"}).reset_index()
 
-app = Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
+df = pd.DataFrame(data.groupby(
+    ["year", "country"]).size()).rename(columns={0: "tsunami_count"}).reset_index()
+
+
+def select_year(ymin, ymax):
+    return df_all.loc[(df_all['year'] > ymin) & (df_all['year'] < ymax)]
+
+def plot_altair(df):
+    chart = alt.Chart(df).mark_bar().encode(
+        x='tsunami_intensity',
+        y='country',
+        color = alt.Color('country'),
+        tooltip=("location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"))
+    return chart.to_html()
+
+
+app = Dash(__name__, external_stylesheets=[
+           'https://codepen.io/chriddyp/pen/bWLwgP.css'])
 
 app.layout = html.Div([
-        html.Iframe(
-                id="bar",
-                style={
-                    "border-width": "0",
-                    "width": "100%",
-                    "height": "400px"})])
-        
-@app.callback(
-    Output("bar", "srcDoc"),
-    Input("year_slider", "value"))
-def plot_bar(year_slider):
-    tsunami = tsunami_df
-    tsunami = tsunami.sort_values(by = ['tsunami_intensity'])
-    tsunami = tsunami[:11]
-    chart = (
-        alt.Chart(
-            tsunami,
-            title="Strongest Tsunamis",
-        )
-        .mark_bar()
-        .encode(
-            y=alt.Y("country", title="Country"),
-            x=alt.X("tsunami_intensity", title="Tsunami Intensity"),
-            color=alt.Color(
-                "country",
-                sort=alt.EncodingSortField("country", order="descending"),
-                title="Country",
-            ),
-            tooltip=("location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"),
-        )
-        .configure_axis(labelFontSize=12, titleFontSize=14)
-        .configure_title(fontSize=15)
-        .configure_legend(labelFontSize=12)
-        .properties(width=400, height=300)
-    )
-    return chart.to_html()
+    html.Iframe(
+        id='line',
+        srcDoc=plot_altair(ymin=1900, ymax=1990),
+        style={'border-width': '0', 'width': '100%', 'height': '400px'}),
+    dcc.RangeSlider(1500, 2000, 20, value=[1900, 1990], id='my-range-slider',
+                    marks={str(year): str(year)
+                           for year in range(1500, 2000, 20)}
+                    )])
+
+
+# @ app.callback(
+#     Output('line', 'srcDoc'),
+#     Input('my-range-slider', 'value'))
+# def update_output(value):
+#     return plot_altair(value[0], value[1])
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
