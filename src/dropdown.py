@@ -26,7 +26,7 @@ server = app.server
 app.layout = html.Div([
     html.Iframe(
         id='bar',
-        srcDoc=plot_altair(df),
+        srcDoc=plot_altair(df_daterange),
         style={'border-width': '0', 'width': '100%', 'height': '400px'}),
     dcc.RangeSlider(1500, 2000, 20, value=[1900, 1990], id='my-range-slider',
                     marks={str(year): str(year)
