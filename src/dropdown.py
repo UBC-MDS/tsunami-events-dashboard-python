@@ -7,7 +7,7 @@ df = pd.read_csv("data/processed/tsunami-events.csv")
 df.columns.values[0] = 'tsunami_instance'
 
 def select_year(ymin, ymax):
-    return df_all.loc[(df['year'] > ymin) & (df['year'] < ymax)]
+    return df.loc[(df['year'] > ymin) & (df['year'] < ymax)]
 
 def plot_altair(data=df):
     chart = alt.Chart(data=df).mark_bar().encode(
