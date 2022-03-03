@@ -4,7 +4,7 @@ from vega_datasets import data
 import pandas as pd
 
 df = pd.read_csv("data/processed/tsunami-events.csv")
-df = pd.DataFrame(df.rename(columns={0: "tsunami_count"}).reset_index())
+df = pd.DataFrame(df.rename(columns={0: "tsunami_count"}))
 
 def select_year(ymin, ymax):
     return df_all.loc[(df_all['year'] > ymin) & (df_all['year'] < ymax)]
