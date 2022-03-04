@@ -18,17 +18,9 @@ Our proposal can be found via this link: [proposal](docs/proposal.md)
 
 ## Accessing the App Locally
 
-To run and explore the app locally, first clone the git repo, create and activate a local environment, and install dependencies:
+To run and explore the app locally, clone the git repo and install required dependencies:
 
     git clone https://github.com/UBC-MDS/tsunami-events-dashboard-python.git
-
-    # mac
-    virtualenv venv
-    source venv/bin/activate
-    # Windows
-    venv\Scripts\activate
-    # Or Linux
-    source venv/bin/activate
 
     pip install -r requirements.txt
 
