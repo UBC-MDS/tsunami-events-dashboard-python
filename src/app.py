@@ -1,6 +1,6 @@
 import dash
 from dash import Dash, html, dcc, State, Input, Output
-from .. import map_plot as wmp
+# from .. import map_plot as wmp
 # from .. import line_plot as lp
 # from .. import dropdown_plot as dp
 # import json
@@ -51,9 +51,9 @@ app.layout = dbc.Container([
             }),
     dbc.Row([
         dbc.Col([
-            html.H3('Years and Countries Selection', className = 'text-warning'),
+            html.H3('Years and Countries Selection', className = 'text-dark'),
             html.Hr(),
-            html.H5('Years of Interest (1800 - 2022)', className = 'text-warning'),
+            html.H5('Years of Interest (1800 - 2022)', className = 'text-dark'),
             dcc.RangeSlider(
                 min = 1800, 
                 max = 2022,
@@ -65,13 +65,13 @@ app.layout = dbc.Container([
                             'always_visible': True}),
             html.Br(),
             html.Br(),
-            html.H5('Countries of Interest', className = 'text-warning'),
+            html.H5('Countries of Interest', className = 'text-dark'),
             dcc.Dropdown(
                 id = 'country_select',
                 multi = True,
                 value = [],
                 options = [{'label': country, 'value': country} for country in country_list],
-                className = 'text-warning'),
+                className = 'text-dark'),
             html.Hr(),
             html.P(
                 "A data visualisation app that allows viewers to observe the number and intensity of tsunamis based on years and countries",
@@ -79,23 +79,23 @@ app.layout = dbc.Container([
             )
         ],
         style = SIDEBAR_STYLE,
-        className = 'btn btn-dark'),
+        className = 'btn btn-light'),
         dbc.Col([
             dbc.Row([
-                html.H2('World Map', className = 'btn btn-warning'),
+                html.H2('World Map', className = 'btn btn-warning btn-lg'),
                 html.Iframe(
                         id = 'scatter',
                         style={'border-width': '0', 'width': '100%', 'height': '400px'})
             ]),
             dbc.Row([
                 dbc.Col([
-                    html.H2('Line Plot', className = 'btn btn-warning'),
+                    html.H2('Line Plot', className = 'btn btn-warning btn-lg'),
                     html.Iframe(
                         id = 'scatter1',
                         style={'border-width': '0', 'width': '100%', 'height': '400px'})
                 ]),
                 dbc.Col([
-                    html.H2('DropDown Plot', className = 'btn btn-warning'),
+                    html.H2('DropDown Plot', className = 'btn btn-warning btn-lg'),
                     html.Iframe(
                         id = 'scatter2',
                         style={'border-width': '0', 'width': '100%', 'height': '400px'})
@@ -104,7 +104,10 @@ app.layout = dbc.Container([
         ],
         style = CONTENT_STYLE)
     ])
-])
+], fluid = True,
+    style = {
+        'backgroundColor': 'black',
+})
 
 if __name__ == '__main__': 
     app.run_server(debug=True)
