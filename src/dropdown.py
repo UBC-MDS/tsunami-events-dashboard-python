@@ -3,15 +3,20 @@ from dash import Dash, dcc, html, Input, Output
 from vega_datasets import data
 import pandas as pd
 
-df = pd.read_csv("data/processed/tsunami-events.csv")
-df['tsunami_instance'] = range(1, len(df) + 1)
-df['tsunami_instance'] = df.index
+PROCESSED_DATA_PATH = "data/processed/tsunami-events.csv"
 
-def select_year(ymin, ymax):
-    return df.loc[(df['year'] >= ymin) & (df['year'] <= ymax)]
+def preprocess(value):
+    df = pd.read_csv(PROCESSED_DATA_PATH)
+    df['tsunami_instance'] = range(1, len(df) + 1)
+    df['tsunami_instance'] = df.index
+    df_daterange = df.loc[(df['year'] >= value[0]), & df['year'] <= value[1])]
+    df_daterange = df_daterange.sort_values(by=['tsunami_intensity'], ascending = False)
+    df_daterange = df_daterange[0:15]
+    return df_daterange
 
-def plot_altair(data):
-    chart = alt.Chart(data).mark_bar().encode(
+def create_bar_plot(value):
+    tsunami_dataframe = preprocess(value)
+    chart = alt.Chart(tsunami_dataframe).mark_bar().encode(
         x=alt.X('tsunami_intensity:Q', title = 'Tsunami Intensity', scale=alt.Scale(domain=(0, 10))),
         y=alt.Y('tsunami_instance:N', sort = '-x', title = 'Country', axis = alt.Axis(labelExpr="datum.country")),
         tooltip=("country:O", "location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"))
@@ -21,29 +26,3 @@ def plot_altair(data):
     
     plot = chart + text
     return plot.to_html()
-
-
-app = Dash(__name__, external_stylesheets=[
-           'https://codepen.io/chriddyp/pen/bWLwgP.css'])
-
-server = app.server
-
-app.layout = html.Div([
-    html.Iframe(
-        id='bar',
-        srcDoc=plot_altair(data=df),
-        style={'border-width': '0', 'width': '100%', 'height': '400px'})])
-
-
-@ app.callback(
-    Output('bar', 'srcDoc'),
-    Input('year-slider', 'value'))
-def update_output(value):
-    df_daterange = select_year(value[0], value[1])
-    df_daterange = df_daterange.sort_values(by=['tsunami_intensity'], ascending = False)
-    df_daterange = df_daterange[0:15]
-    return plot_altair(df_daterange)
-
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
