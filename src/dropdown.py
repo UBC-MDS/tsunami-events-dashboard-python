@@ -32,16 +32,12 @@ app.layout = html.Div([
     html.Iframe(
         id='bar',
         srcDoc=plot_altair(data=df),
-        style={'border-width': '0', 'width': '100%', 'height': '400px'}),
-    dcc.RangeSlider(1500, 2000, 20, value=[1900, 1990], id='my-range-slider',
-                    marks={str(year): str(year)
-                           for year in range(1500, 2000, 20)}
-                    )])
+        style={'border-width': '0', 'width': '100%', 'height': '400px'})])
 
 
 @ app.callback(
     Output('bar', 'srcDoc'),
-    Input('my-range-slider', 'value'))
+    Input('year-slider', 'value'))
 def update_output(value):
     df_daterange = select_year(value[0], value[1])
     df_daterange = df_daterange.sort_values(by=['tsunami_intensity'], ascending = False)
