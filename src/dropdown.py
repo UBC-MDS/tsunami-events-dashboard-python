@@ -5,7 +5,7 @@ import pandas as pd
 
 df = pd.read_csv("data/processed/tsunami-events.csv")
 df.columns.values[0] = 'tsunami_instance'
-df.groupby('country', as_index = False)
+# df.groupby('country', as_index = False)
 
 def select_year(ymin, ymax):
     return df.loc[(df['year'] >= ymin) & (df['year'] <= ymax)]
@@ -13,7 +13,7 @@ def select_year(ymin, ymax):
 def plot_altair(data):
     chart = alt.Chart(data).mark_bar().encode(
         x=alt.X('tsunami_intensity:Q', scale=alt.Scale(domain=(0, 10))),
-        y=alt.Y('country:O', sort = '-x'),
+        y=alt.Y('tsunami_instance:N', sort = '-x'),
         tooltip=("country:O", "location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"))
     return chart.to_html()
 
