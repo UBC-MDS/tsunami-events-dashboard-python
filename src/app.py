@@ -1,7 +1,6 @@
-from tkinter import font
 import dash
 from dash import Dash, html, dcc, State, Input, Output
-# from .. import world_map_plot as wmp
+from .. import map_plot as wmp
 # from .. import line_plot as lp
 # from .. import dropdown_plot as dp
 # import json
