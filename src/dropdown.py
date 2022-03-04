@@ -17,9 +17,9 @@ def plot_altair(data):
         tooltip=("country:O", "location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"))
     
     text = chart.mark_text(align="left", baseline="middle", dx = 3).encode(
-        text=alt.Text("country:O")
+        text= "country:O")
     
-    return (chart+text).to_html()
+    return text.to_html()
 
 
 app = Dash(__name__, external_stylesheets=[
