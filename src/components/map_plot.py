@@ -50,7 +50,7 @@ def create_map_plot(year_start, year_end, countries):
         )
     )
 
-    return map + tsunami_spots
+    return (map + tsunami_spots).to_html()
 
 def preprocess_data(year_start, year_end, countries):
 

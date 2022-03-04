@@ -46,7 +46,7 @@ app.layout = dbc.Container([
             'margin-bottom': 30,
             'text-align': 'center',
             'font-size': '48px'
-            }),
+        }),
     dbc.Row([
         dbc.Col([
             html.H3('Years and Countries Selection', className = 'text-dark'),
@@ -57,7 +57,7 @@ app.layout = dbc.Container([
                 max = 2022,
                 value = [tsunami_df['year'].min(), tsunami_df['year'].max()],
                 marks = None, 
-                id = 'year-slider',
+                id='year_slider',
                 allowCross = False, # Prevent handles from crossing each other
                 tooltip = {'placement': 'bottom',
                             'always_visible': True}),
@@ -65,7 +65,7 @@ app.layout = dbc.Container([
             html.Br(),
             html.H5('Countries of Interest', className = 'text-dark'),
             dcc.Dropdown(
-                id = 'country_select',
+                id='country_select',
                 multi = True,
                 value = [],
                 options = [{'label': country, 'value': country} for country in country_list],
@@ -82,7 +82,7 @@ app.layout = dbc.Container([
             dbc.Row([
                 html.H2('World Map', className = 'btn btn-warning btn-lg'),
                 html.Iframe(
-                        id = 'map_plot',
+                        id='map_plot',
                         style={'border-width': '0', 'width': '100%', 'height': '400px'},
                         srcDoc=create_map_plot(year_start=1800, year_end=2022, countries=[]))
             ]),
@@ -115,7 +115,6 @@ app.layout = dbc.Container([
     Input('country_select', 'value')
 )
 def update_map_plot(value, value_country):
-    print(value[0], value[1], value_country)
     return create_map_plot(value[0], value[1], value_country)
 
 # # App callback for scatter_plot
