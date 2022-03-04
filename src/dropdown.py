@@ -19,7 +19,8 @@ def plot_altair(data):
     text = chart.mark_text(align="left", baseline="middle", dx = 3).encode(
         text= "country:O")
     
-    return text.to_html()
+    plot = chart + text
+    return plot.to_html()
 
 
 app = Dash(__name__, external_stylesheets=[
