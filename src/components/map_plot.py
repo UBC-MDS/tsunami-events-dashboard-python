@@ -2,8 +2,8 @@ import altair as alt
 import pandas as pd
 from vega_datasets import data
 
-PROCESSED_DATA_PATH = "../data/processed/tsunami-events.csv"
-COUNTRY_IDS_FILE_PATH = "../data/processed/world-110m-country-names.tsv"
+PROCESSED_DATA_PATH = "data/processed/tsunami-events.csv"
+COUNTRY_IDS_FILE_PATH = "data/processed/world-110m-country-names.tsv"
 
 def create_map_plot(year_start, year_end, countries):
     
