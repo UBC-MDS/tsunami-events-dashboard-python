@@ -15,198 +15,97 @@ import pandas as pd
 tsunami_df = pd.read_csv('data/processed/tsunami-events.csv')
 
 years = tsunami_df['year'].dropna().unique() # need to add start and end year
-
 countries = tsunami_df['country'].dropna().unique()
-country_list = sorted(list(countries)) # countries are listed alphabetically
+country_list = ['All'] + sorted(list(countries)) # countries are listed alphabetically
 
-# Setup app and layout/frontend
-app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(
+    __name__, title = "Tsunami History", external_stylesheets=[dbc.themes.QUARTZ]
+)
+server = app.server
 
-# Set up theme of dashboard
-colour = {
-    'background': '#000000',
-    'border' : '#58c3c0',
-    'text': '#FFFBF1'
+# Creating style for both sidebar and plots
+SIDEBAR_STYLE = {
+    "position": "fixed",
+    "top": '10rem',
+    "left": 0,
+    "bottom": 0,
+    "width": "20rem",
+    "padding": "2rem 1rem",
+    "z-index": 4000000,
 }
 
+CONTENT_STYLE = {
+    "margin-left": "20rem",
+    "margin-right": "2rem",
+    "padding": "2rem 1rem",
+    "z-index": -1,
+}
+# Structure of app, including selection criteria components
 app.layout = dbc.Container([
-    # Title of dashboard (if there is time, we can add 'Fade'/'Collapse' as a description of how to use our dashboard)
-    html.H1(['Tsunami History Dashboard',
-        dbc.Button(
-            'More',
-            id = 'collapse-button',
-            n_clicks=0,
-            size = 'sm',
-            color = 'secondary',
-            className="d-grid gap-2 d-md-flex justify-content-md-end",
-        ),
-        dbc.Collapse(
-            dbc.Card(dbc.CardBody('Info about our app'),
-            style = {
-                'color': colour['text'],
-                'backgroundColor': '#6d6d6d',
-                'font-size': '14px',
-                'text-align': 'left'
-            }),
-            id = 'collapse',
-            is_open = False,
-        ),
-    ], 
+    html.H1('Tsunami History Dashboard', 
         style = {
-            'backgroundColor': colour['border'],
             'padding': 10,
-            'color': colour['text'],
             'margin-top': 20,
             'margin-bottom': 30,
             'text-align': 'center',
-            'font-size': '48px',
-            'border-radius': 3,
-            'font-family': 'Georgia, serif'}),
-
-    # The first column - the search criteria
+            'font-size': '48px'
+            }),
     dbc.Row([
-        # First column: Navigation
         dbc.Col([
-            # html.Iframe(
-            #             id = 'scatter4',
-            #             style={'border-width': '0', 'width': '100%', 'height': '50px'}),
-            html.H5('Years of Interest (1800 - 2022)',
-                    style = {
-                        'color': colour['text'],
-                        'margin-top': 20,
-                        'margin-bottom': 30,
-                        'text-align': 'center',
-                        'font-size': '15px',
-                        'border-radius': 3,
-                        'font-family': 'Georgia, serif',
-                        'font-weight': 'bold'}),
-            html.Br(),
+            html.H3('Years and Countries Selection', className = 'text-warning'),
+            html.Hr(),
+            html.H5('Years of Interest (1800 - 2022)', className = 'text-warning'),
             dcc.RangeSlider(
                 min = 1800, 
                 max = 2022,
                 value = [tsunami_df['year'].min(), tsunami_df['year'].max()],
                 marks = None, 
-                # marks = {1800: '1800', 1850:'1850', 1900: '1900', 1950: '1950', 2000: '2000', 2022: '2022'},
                 id = 'year-slider',
                 allowCross = False, # Prevent handles from crossing each other
                 tooltip = {'placement': 'bottom',
                             'always_visible': True}),
             html.Br(),
             html.Br(),
-            html.Br(),
-            # html.Iframe(
-            #             id = 'scatter5',
-            #             style={'border-width': '0', 'width': '100%', 'height': '100px'}),
-            html.H5('Countries of Interest',
-                     style = {
-                        'color': colour['text'],
-                        'margin-top': 20,
-                        'margin-bottom': 30,
-                        'text-align': 'center',
-                        'font-size': '15px',
-                        'border-radius': 3,
-                        'font-family': 'Georgia, serif',
-                        'font-weight': 'bold'}),
-            html.Br(),
+            html.H5('Countries of Interest', className = 'text-warning'),
             dcc.Dropdown(
                 id = 'country_select',
                 multi = True,
-                value = ['INDONESIA','JAPAN'],
-                options = [{'label': country, 'value': country} for country in country_list])
-            # NEED A SELECT ALL OPTION
-            # dcc.Checklist(
-            #     id = 'select-all',
-            #     options = [{'label': 'Select All', 'value': country_list}],
-            #     values = [])
+                value = [],
+                options = [{'label': country, 'value': country} for country in country_list],
+                className = 'text-warning'),
+            html.Hr(),
+            html.P(
+                "A data visualisation app that allows viewers to observe the number and intensity of tsunamis based on years and countries",
+                className = 'form-label'
+            )
         ],
-        width = 3,
-        style = {
-            'border': '5px solid',
-            'backgroundColor': colour['border'],
-            'padding': 10,
-            'margin-top': 20,
-            'margin-bottom': 30,
-            'border-radius': 4,
-            'font-family': 'Georgia, serif'}
-        ),
-        # Second Column: Plots
+        style = SIDEBAR_STYLE,
+        className = 'btn btn-dark'),
         dbc.Col([
             dbc.Row([
-                html.H2('World Map',
-                        style = {
-                            'backgroundColor': colour['border'],
-                            'padding': 10,
-                            'color': colour['text'],
-                            'margin-top': 20,
-                            'margin-bottom': 30,
-                            'text-align': 'center',
-                            'font-size': '30px',
-                            'border-radius': 1,
-                            'font-family': 'Georgia, serif'}),
+                html.H2('World Map', className = 'btn btn-warning'),
                 html.Iframe(
                         id = 'scatter',
                         style={'border-width': '0', 'width': '100%', 'height': '400px'})
             ]),
             dbc.Row([
                 dbc.Col([
-                    html.H2('Line Plot',
-                            style = {
-                                    'backgroundColor': colour['border'],
-                                        'padding': 10,
-                                        'color': colour['text'],
-                                        'margin-top': 20,
-                                        'margin-bottom': 30,
-                                        'text-align': 'center',
-                                        'font-size': '30px',
-                                        'border-radius': 1,
-                                        'font-family': 'Georgia, serif'}),
+                    html.H2('Line Plot', className = 'btn btn-warning'),
                     html.Iframe(
-                        id = 'scatter2',
-                        style={'border-width': '0', 'width': '100%', 'height': '200px'}),
+                        id = 'scatter1',
+                        style={'border-width': '0', 'width': '100%', 'height': '400px'})
                 ]),
                 dbc.Col([
-                    html.H2('Dropdown Plot',
-                            style = {
-                            'backgroundColor': colour['border'],
-                                'padding': 10,
-                                'color': colour['text'],
-                                'margin-top': 20,
-                                'margin-bottom': 30,
-                                'text-align': 'center',
-                                'font-size': '30px',
-                                'border-radius': 1,
-                                'font-family': 'Georgia, serif'}),
+                    html.H2('DropDown Plot', className = 'btn btn-warning'),
                     html.Iframe(
-                        id = 'scatter3',
-                        style={'border-width': '0', 'width': '100%', 'height': '200px'})
+                        id = 'scatter2',
+                        style={'border-width': '0', 'width': '100%', 'height': '400px'})
                 ])
             ])
-        ])
+        ],
+        style = CONTENT_STYLE)
     ])
-    ], style = {
-        'backgroundColor': colour['background']
-    }
-    )
-
-@app.callback(
-    Output('collapse', 'is_open'),
-    [Input('collapse-button', 'n_clicks')],
-    [State('collapse', 'is_open')],
-)
-def toggle_collapse(n, is_open):
-    if n:
-        return not is_open
-    return is_open
+])
 
 if __name__ == '__main__': 
     app.run_server(debug=True)
-
-# @app.callback(
-#     Output('', ''),
-#     Input('year-slider', 'start-year'),
-#     Input('year-slider', 'end-year')
-# )
-
-# # Output for year-slider
-# def update_output(start-year, end-year):
-#     return 'You have selected {start-year} and {end-year}'
