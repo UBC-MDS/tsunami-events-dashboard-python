@@ -5,7 +5,7 @@ import pandas as pd
 
 df = pd.read_csv("data/processed/tsunami-events.csv")
 df.columns.values[0] = 'tsunami_instance'
-# df.groupby('country').
+df.groupby('country', as_index = False)
 
 def select_year(ymin, ymax):
     return df.loc[(df['year'] >= ymin) & (df['year'] <= ymax)]
