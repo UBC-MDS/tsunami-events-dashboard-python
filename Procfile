@@ -1,1 +1,1 @@
-web: gunicorn src.dropdown:server
+web: gunicorn src.app:server
