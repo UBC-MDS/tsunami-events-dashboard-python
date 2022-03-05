@@ -85,20 +85,16 @@ def get_data(year_start=1802, year_end=2022, countries=[]):
         f"{year_start} <= year <= {year_end}"
     )
     if countries == []:
-        countries = tsunami_events.sort_values(
-            by="earthquake_magnitude", ascending=False)[
-            "country"].drop_duplicates().tolist()[:5]
+        countries = tsunami_events.sort_values(by="earthquake_magnitude", ascending=False)[
+            "country"].drop_duplicates().tolist()[:10]
 
     tsunami_events = tsunami_events[tsunami_events['total_deaths'].notna()]
-    tsunami_events['mercalli_intensity'] = pd.cut(
-        tsunami_events['earthquake_magnitude'],
-        bins=[1, 2, 4, 5, 6, 7, 10],
-        labels=["I", "II-III", "IV–V", "VI–VII", "VII–IX", "VIII or higher"]
-    ).astype(str)
+    tsunami_events['mercalli_intensity'] = pd.cut(tsunami_events['earthquake_magnitude'],
+                                                  bins=[1, 2, 4, 5, 6, 7, 10],
+                                                  labels=["I", "II-III", "IV–V", "VI–VII", "VII–IX", "VIII or higher"]).astype(str)
 
     if len(countries) > 10:
-        countries_top10 = [x for x in tsunami_events.sort_values(
-            by="earthquake_magnitude", ascending=False)[
+        countries_top10 = [x for x in tsunami_events.sort_values(by="earthquake_magnitude", ascending=False)[
             "country"].drop_duplicates().tolist() if x in countries][:10]
 
         return tsunami_events.loc[(tsunami_events['year'] > year_start) &

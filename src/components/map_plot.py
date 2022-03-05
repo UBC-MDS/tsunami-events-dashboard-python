@@ -2,8 +2,8 @@ import altair as alt
 import pandas as pd
 from vega_datasets import data
 
-PROCESSED_DATA_PATH = "../data/processed/tsunami-events.csv"
-COUNTRY_IDS_FILE_PATH = "../data/processed/world-110m-country-names.tsv"
+PROCESSED_DATA_PATH = "data/processed/tsunami-events.csv"
+COUNTRY_IDS_FILE_PATH = "data/processed/world-110m-country-names.tsv"
 
 def create_map_plot(year_start, year_end, countries):
     
@@ -30,7 +30,7 @@ def create_map_plot(year_start, year_end, countries):
                 tooltip=[alt.Tooltip("name:N", title="Country"),
                          alt.Tooltip("count:Q", title="Total Tsunami Hits")])
         .project("naturalEarth1")
-        .properties(width=800, height=400)
+        .properties(width=700, height=350)
     )
 
     tsunami_events["legend"] = "Tsunami Origin"
@@ -47,10 +47,10 @@ def create_map_plot(year_start, year_end, countries):
                                               orient='top-left')),
             tooltip=[alt.Tooltip("earthquake_magnitude",
                     title="Earthquake Magnitude")]
-        )
+        ).properties(width=300, height=100)
     )
 
-    return map + tsunami_spots
+    return (map + tsunami_spots).to_html()
 
 def preprocess_data(year_start, year_end, countries):
 
