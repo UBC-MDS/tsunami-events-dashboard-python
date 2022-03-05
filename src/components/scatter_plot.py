@@ -10,7 +10,7 @@ def create_scatter_plot(year_start=1900, year_end=2022, countries=[]):
                 title='Earthquake Magnitude (Richter Scale)',
                 scale=alt.Scale(domain=(5.5, 10))),
         y=alt.Y('total_deaths',
-                title='Total Deaths (log-transformed), per Event',
+                title='Total Deaths (log-scale), per Event',
                 scale=alt.Scale(type='log')),
         color='country',
         tooltip=['year', 'mercalli_intensity', 'country', 'total_deaths']

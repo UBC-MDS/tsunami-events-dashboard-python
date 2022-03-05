@@ -29,12 +29,13 @@ SIDEBAR_STYLE = {
     "width": "20rem",
     "padding": "2rem 1rem",
     "z-index": 4000000,
+    'background-color': 'rgba(255,255,255,.25)'
+
 }
 
 CONTENT_STYLE = {
     "margin-left": "20rem",
     "margin-right": "2rem",
-    "padding": "2rem 1rem",
     "z-index": -1,
 }
 # Structure of app, including selection criteria components
@@ -63,56 +64,61 @@ navbar = dbc.Navbar(
                 is_open=False,
                 navbar=True,
             ),
-        ]
+        ],
+        style = {
+        'margin-left': '15px',
+        'font-weight': "600"}
     ),
     color="dark",
-    dark=True
+    dark=True,
 )
 
 world_plot_card = dbc.Card(
     dbc.CardBody(
-        [html.H4('Total Tsunami Hits by Country with Origin Points', className = 'card-title'),
+        [html.H6('Total Tsunami Hits by Country with Origin Points', className = 'card-title',
+        style = {'margin-bottom': '0px'}),
         html.Iframe(
             id='map_plot',
-            style={'border-width': '0', 'height': '470px', 'width': '100%'},
+            style={'border-width': '0', 'height': '380px', 'width': '100%'},
             srcDoc=create_map_plot(year_start=1800, year_end=2022, countries=[]))
-        ]
+        ], style = {'padding': '15px', 'padding-bottom': '0px'}
     ),
-    style = {'padding':0}
+    style = {'padding': 0}
 )
 
 scatter_plot_card = dbc.Card(
     dbc.CardBody(
-        [html.H4('Total Deaths by Earthquake Magnitude', className = 'card-title'),
+        [html.H6('Total Deaths by Earthquake Magnitude', className = 'card-title',
+        style = {'margin-bottom': '0px'}),
         html.Iframe(
             id = 'scatter_plot',
-            style={'border-width': '0', 'height': '240px','width': '100%'},
+            style={'border-width': '0', 'height': '220px','width': '100%'},
             srcDoc=create_scatter_plot(year_start=1800, year_end=2022, countries=[]) 
-        )]
+        )], style = {'padding': '15px', 'padding-bottom': '0px'}
     ),
     style = {'padding':0}
 )
 
 bar_chart_card = dbc.Card(
     dbc.CardBody(
-        [html.H4('Top 10 most intense tsunami in given years', className = 'card-title'),
+        [html.H6('Top 10 most intense tsunami in given years', className = 'card-title',
+        style = {'margin-bottom': '0px'}),
         html.Iframe(
             id = 'bar_plot',
-            style={'border-width': '0', 'height': '240px','width': '100%'},
+            style={'border-width': '0', 'height': '220px','width': '100%'},
             srcDoc=create_bar_plot(year_start=1800, year_end=2022)
-        )]
+        )], style = {'padding': '15px', 'padding-bottom': '0px'}
     ),
     style = {'padding':0}
 )
-
 
 app.layout = dbc.Container([
     navbar,
     dbc.Row([
         dbc.Col([
-            html.H3('Years and Countries Selection', className = 'text-dark'),
+            html.H5('Years and Countries Selection', className = 'form-label'),
             html.Hr(),
-            html.H5('Years of Interest (1800 - 2022)', className = 'text-dark'),
+            html.H6('Years of Interest (1800 - 2022)', className = 'form-label'),
             dcc.RangeSlider(
                 min = 1800, 
                 max = 2022,
@@ -124,7 +130,7 @@ app.layout = dbc.Container([
                             'always_visible': True}),
             html.Br(),
             html.Br(),
-            html.H5('Countries of Interest', className = 'text-dark'),
+            html.H6('Countries of Interest', className = 'form-label'),
             dcc.Dropdown(
                 id='country_select',
                 multi = True,
@@ -138,11 +144,12 @@ app.layout = dbc.Container([
             )
         ],
         style = SIDEBAR_STYLE,
-        className = 'btn btn-light'),
+        className = "btn btn-secondary"
+        ),
         dbc.Col([
             dbc.Row([
                 world_plot_card
-            ], style = {'margin': 'auto', 'width': '1000px'}),
+            ], style = {'margin': 'auto', 'width': '800px', 'padding':'0px'}),
             html.Br(),
             dbc.Row([
                 dbc.Col([
@@ -158,7 +165,8 @@ app.layout = dbc.Container([
 ], fluid = True,
     style = {
         'backgroundColor': 'black',
-        'padding': 0
+        'padding': '0px',
+        'height': '100vh'
 })
 
 # App callback for map_plot
