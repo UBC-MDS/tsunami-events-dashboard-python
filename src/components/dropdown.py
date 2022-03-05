@@ -6,10 +6,10 @@ import pandas as pd
 PROCESSED_DATA_PATH = "data/processed/tsunami-events.csv"
 
 def preprocess(year_start, year_end):
-        """The function to return the processed dataframe with a new index column
-        and combination column of the country and year. Also filters the df
-        based on the callback year slider for tsunamis occurring between
-        specific dates, then reorders by tsunami intensity.
+    """The function to return the processed dataframe with a new index column
+    and combination column of the country and year. Also filters the df
+    based on the callback year slider for tsunamis occurring between
+    specific dates, then reorders by tsunami intensity.
     Parameters
     ----------
     year_start : int
@@ -33,8 +33,8 @@ def preprocess(year_start, year_end):
     return df
 
 def create_bar_plot(year_start, year_end):
-        """The function to create a bar graph of the highest intensity
-        tsunamis between the year_start and year_end.
+    """The function to create a bar graph of the highest intensity
+    tsunamis between the year_start and year_end.
     Parameters
     ----------
     year_start : int

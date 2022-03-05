@@ -6,6 +6,24 @@ PROCESSED_DATA_PATH = "data/processed/tsunami-events.csv"
 COUNTRY_IDS_FILE_PATH = "data/processed/world-110m-country-names.tsv"
 
 def create_map_plot(year_start, year_end, countries):
+    """Create a world map plot with countries colored by no. of tsunami
+    hits and with origin points.
+
+    Parameters
+    ----------
+    year_start : int
+        the lower bound of the range of years selected by user
+    year_end : int
+        the upper bound of the range of years selected by user
+    countries : list
+        the list of countries to filter as selected by the user
+    
+    Returns
+    -------
+    LayerChart:
+        a world map plot with countries colored by no. of tsunami
+        hits and with origin points
+    """
     
     world_map = alt.topo_feature(data.world_110m.url, 'countries')
     counts, tsunami_events = preprocess_data(year_start, year_end, countries)
@@ -53,6 +71,24 @@ def create_map_plot(year_start, year_end, countries):
     return (map + tsunami_spots).to_html()
 
 def preprocess_data(year_start, year_end, countries):
+    """Reads and preprocesses the data for the map plot.
+
+    Parameters
+    ----------
+    year_start : int
+        the lower bound of the range of years selected by user
+    year_end : int
+        the upper bound of the range of years selected by user
+    countries : list
+        the list of countries to filter as selected by the user
+    
+    Returns
+    -------
+    counts:
+        a dataframe which has the number of tsunami hits by countries
+    tsunami_events:
+        a dataframe of filtered tsunami events
+    """
 
     tsunami_events = pd.read_csv(PROCESSED_DATA_PATH)
     country_ids = pd.read_csv(COUNTRY_IDS_FILE_PATH, sep="\t")
