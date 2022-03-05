@@ -74,7 +74,7 @@ world_plot_card = dbc.Card(
         [html.H4('Total Tsunami Hits by Country with Origin Points', className = 'card-title'),
         html.Iframe(
             id='map_plot',
-            style={'border-width': '0', 'height': '420px', 'width': '100%'},
+            style={'border-width': '0', 'height': '470px', 'width': '100%'},
             srcDoc=create_map_plot(year_start=1800, year_end=2022, countries=[]))
         ]
     ),
@@ -86,7 +86,7 @@ scatter_plot_card = dbc.Card(
         [html.H4('Total Deaths by Earthquake Magnitude', className = 'card-title'),
         html.Iframe(
             id = 'scatter_plot',
-            style={'border-width': '0', 'height': '270px','width': '100%'},
+            style={'border-width': '0', 'height': '240px','width': '100%'},
             srcDoc=create_scatter_plot(year_start=1800, year_end=2022, countries=[]) 
         )]
     ),
@@ -98,7 +98,7 @@ bar_chart_card = dbc.Card(
         [html.H4('Top 10 most intense tsunami in given years', className = 'card-title'),
         html.Iframe(
             id = 'bar_plot',
-            style={'border-width': '0', 'height': '270px','width': '100%'},
+            style={'border-width': '0', 'height': '240px','width': '100%'},
             srcDoc=create_bar_plot(year_start=1800, year_end=2022)
         )]
     ),
@@ -142,7 +142,7 @@ app.layout = dbc.Container([
         dbc.Col([
             dbc.Row([
                 world_plot_card
-            ], style = {'margin': 'auto', 'width': '880px'}),
+            ], style = {'margin': 'auto', 'width': '1000px'}),
             html.Br(),
             dbc.Row([
                 dbc.Col([
@@ -151,7 +151,7 @@ app.layout = dbc.Container([
                 dbc.Col([
                     bar_chart_card
                 ], style = {'margin': 'auto', 'width': '400px'})
-            ])
+            ],style = {'margin': 'auto', 'width': '1020px'})
         ],
         style = CONTENT_STYLE)
     ])

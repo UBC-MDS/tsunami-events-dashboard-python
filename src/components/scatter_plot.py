@@ -15,7 +15,7 @@ def create_scatter_plot(year_start=1900, year_end=2022, countries=[]):
         color='country',
         tooltip=['year', 'mercalli_intensity', 'country', 'total_deaths']
     ).interactive(
-    ).properties(width=400, height=220)
+    ).properties(width=180, height=150)
     return chart.to_html()
 
 
