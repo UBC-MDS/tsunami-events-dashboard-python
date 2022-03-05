@@ -1,6 +1,4 @@
 import altair as alt
-from dash import Dash, dcc, html, Input, Output
-from vega_datasets import data
 import pandas as pd
 
 PROCESSED_DATA_PATH = "data/processed/tsunami-events.csv"
