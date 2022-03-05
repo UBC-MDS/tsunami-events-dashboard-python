@@ -87,7 +87,7 @@ world_plot_card = dbc.Card(
 
 scatter_plot_card = dbc.Card(
     dbc.CardBody(
-        [html.H6('Total Deaths by Earthquake Magnitude', className = 'card-title',
+        [html.H6('Top 10 Countries\' Total Deaths by Earthquake Magnitude', className = 'card-title',
         style = {'margin-bottom': '0px'}),
         html.Iframe(
             id = 'scatter_plot',
@@ -100,7 +100,7 @@ scatter_plot_card = dbc.Card(
 
 bar_chart_card = dbc.Card(
     dbc.CardBody(
-        [html.H6('Top 10 most intense tsunami in given years', className = 'card-title',
+        [html.H6('10 Most Intense Tsunamis by Country', className = 'card-title',
         style = {'margin-bottom': '0px'}),
         html.Iframe(
             id = 'bar_plot',
