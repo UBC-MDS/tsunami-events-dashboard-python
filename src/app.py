@@ -1,7 +1,7 @@
 import dash
 from dash import Dash, html, dcc, State, Input, Output
 from components.map_plot import create_map_plot
-# from .. import line_plot as lp
+from components.scatter_plot import create_scatter_plot
 # from .. import dropdown_plot as dp
 # import json
 
@@ -13,7 +13,7 @@ tsunami_df = pd.read_csv('data/processed/tsunami-events.csv')
 
 years = tsunami_df['year'].dropna().unique() # need to add start and end year
 countries = tsunami_df['country'].dropna().unique()
-country_list = ['All'] + sorted(list(countries)) # countries are listed alphabetically
+country_list = sorted(list(countries)) # countries are listed alphabetically
 
 app = dash.Dash(
     __name__, title = "Tsunami History", external_stylesheets=[dbc.themes.QUARTZ]
@@ -23,7 +23,7 @@ server = app.server
 # Creating style for both sidebar and plots
 SIDEBAR_STYLE = {
     "position": "fixed",
-    "top": '10rem',
+    "top": '62px',
     "left": 0,
     "bottom": 0,
     "width": "20rem",
@@ -38,15 +38,51 @@ CONTENT_STYLE = {
     "z-index": -1,
 }
 # Structure of app, including selection criteria components
+
+# Formatting NavBar
+navbar = dbc.Navbar(
+    dbc.Container(
+        [
+            html.A(
+                # Use row and col to control vertical alignment of logo / brand
+                dbc.Row(
+                    [
+                        # dbc.Col(html.Img(src=PLOTLY_LOGO, height="30px")),
+                        dbc.Col(dbc.NavbarBrand("Tsunami Events Dashboard", className="ms-2")),
+                    ],
+                    align="center",
+                    className="g-0",
+                ),
+                # href="https://plotly.com",
+                # style={"textDecoration": "none"},
+            ),
+            dbc.NavbarToggler(id="navbar-toggler", n_clicks=0),
+            dbc.Collapse(
+                # search_bar,
+                id="navbar-collapse",
+                is_open=False,
+                navbar=True,
+            ),
+        ]
+    ),
+    color="dark",
+    dark=True
+)
+
+world_plot_card = dbc.Card(
+    dbc.CardBody(
+        [html.H4('Total Tsunami Hits by Country with Origin Points', className = 'card-title'),
+        html.Iframe(
+            id='map_plot',
+            style={'border-width': '0', 'height': '420px', 'width': '100%'},
+            srcDoc=create_map_plot(year_start=1800, year_end=2022, countries=[]))
+        ]
+    ),
+    style = {'padding':0}
+)
+
 app.layout = dbc.Container([
-    html.H1('Tsunami History Dashboard', 
-        style = {
-            'padding': 10,
-            'margin-top': 20,
-            'margin-bottom': 30,
-            'text-align': 'center',
-            'font-size': '48px'
-        }),
+    navbar,
     dbc.Row([
         dbc.Col([
             html.H3('Years and Countries Selection', className = 'text-dark'),
@@ -80,24 +116,23 @@ app.layout = dbc.Container([
         className = 'btn btn-light'),
         dbc.Col([
             dbc.Row([
-                html.H2('World Map', className = 'btn btn-warning btn-lg'),
-                html.Iframe(
-                        id='map_plot',
-                        style={'border-width': '0', 'width': '100%', 'height': '400px'},
-                        srcDoc=create_map_plot(year_start=1800, year_end=2022, countries=[]))
-            ]),
+                world_plot_card
+            ], style = {'margin': 'auto', 'width': '880px'}),
             dbc.Row([
                 dbc.Col([
-                    html.H2('Line Plot', className = 'btn btn-warning btn-lg'),
+                    html.H2('Total Deaths by Earthquake Magnitude', className = 'btn btn-warning btn-lg'),
+                    html.Br(),
                     html.Iframe(
-                        id = 'line_plot',
-                        style={'border-width': '0', 'width': '100%', 'height': '400px'})
+                        id = 'scatter_plot',
+                        style={'border-width': '0', 'width': '120%','height': '100%'},
+                        srcDoc=create_scatter_plot(year_start=1800, year_end=2022, countries=[]))
                 ]),
                 dbc.Col([
                     html.H2('DropDown Plot', className = 'btn btn-warning btn-lg'),
                     html.Iframe(
-                        id = 'drop_down_plot',
-                        style={'border-width': '0', 'width': '100%', 'height': '400px'})
+                        id = 'bar_chart',
+                        style={'border-width': '0', 'width': '400px', 'height': '400px'}
+                        )
                 ])
             ])
         ],
@@ -106,6 +141,7 @@ app.layout = dbc.Container([
 ], fluid = True,
     style = {
         'backgroundColor': 'black',
+        'padding': 0
 })
 
 # App callback for map_plot
@@ -117,23 +153,33 @@ app.layout = dbc.Container([
 def update_map_plot(value, value_country):
     return create_map_plot(value[0], value[1], value_country)
 
-# # App callback for scatter_plot
-# @app.callback(
-#     Output('scatter_plot', 'srcDoc'),
-#     Input('year_slider', 'value'),
-#     Input('country_select', 'value')
-# )
-# def update_scatter_plot(value, value_country):
-#     return create_scatter_plot(value[0], value[1], value_country)
+# App callback for scatter_plot
+@app.callback(
+    Output('scatter_plot', 'srcDoc'),
+    Input('year_slider', 'value'),
+    Input('country_select', 'value')
+)
+def update_scatter_plot(value, value_country):
+    return create_scatter_plot(value[0], value[1], value_country)
 
 # # App callback for bar_plot
 # @app.callback(
-#     Output('bar_plot', 'srcDoc'),
+#     Output('bar_chart', 'srcDoc'),
 #     Input('year_slider', 'value')
 # )
-# def update_bar_plot(value, value_country):
-#     return create_bar_plot(value)
+# def bar_chart(value, value_country):
+#     return create_bar_chart(value)
 
+@app.callback(
+    Output("navbar-collapse", "is_open"),
+    [Input("navbar-toggler", "n_clicks")],
+    [State("navbar-collapse", "is_open")],
+)
+def toggle_navbar_collapse(n, is_open):
+    if n:
+        return not is_open
+    return is_open
 
 if __name__ == '__main__': 
     app.run_server(debug=True)
+
