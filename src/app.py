@@ -1,5 +1,8 @@
+import sys
+sys.path.add("components/")
+
 import dash
-from dash import Dash, html, dcc, State, Input, Output
+from dash import html, dcc, State, Input, Output
 from components.map_plot import create_map_plot
 from components.scatter_plot import create_scatter_plot
 from components.dropdown import create_bar_plot
@@ -16,7 +19,6 @@ country_list=sorted(list(countries))
 app=dash.Dash(
     __name__, title="🌊 Tsunami Events 🌊", external_stylesheets=[dbc.themes.QUARTZ]
 )
-
 server=app.server
 
 SIDEBAR_STYLE={
