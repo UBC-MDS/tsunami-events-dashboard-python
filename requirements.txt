@@ -1,6 +1,5 @@
-pandas
-gunicorn
 altair
+gunicorn
 dash
 dash_bootstrap_components
 plotly
