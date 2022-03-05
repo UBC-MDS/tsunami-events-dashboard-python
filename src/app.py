@@ -1,5 +1,5 @@
 import sys
-sys.path.add("components/")
+sys.path.append("components/")
 
 import dash
 from dash import html, dcc, State, Input, Output
