@@ -19,7 +19,7 @@ def create_bar_plot(year_start, year_end):
     chart = alt.Chart(df).mark_bar().encode(
         x=alt.X('tsunami_intensity:Q', title = 'Tsunami Intensity', scale=alt.Scale(domain=(0, 12))),
         y=alt.Y('tsunami_instance:N', sort = '-x', title = 'Country', axis = alt.Axis(labelExpr="datum.country")),
-        color = ,
+        color = 'country',
         tooltip=("country:O", "location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"))
     
     text = chart.mark_text(align="left", baseline="middle", dx = 3).encode(
