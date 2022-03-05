@@ -10,6 +10,7 @@ def preprocess(year_start, year_end):
     df['tsunami_instance'] = range(1, len(df) + 1)
     df['tsunami_instance'] = df.index
     df['combine'] = df['country'].astype(str) + ', ' + df['year'].astype(str)
+    df = df.query('tsunami_intensity > 0')
     df = df.query(f"{year_start} <= year <= {year_end}")
     df = df.sort_values(by=['tsunami_intensity'], ascending = False)
     df = df[0:15]
