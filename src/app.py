@@ -1,6 +1,7 @@
 import dash
 from dash import Dash, html, dcc, State, Input, Output
 from components.map_plot import create_map_plot
+from components.scatter_plot import create_scatter_plot
 # from .. import line_plot as lp
 # from .. import dropdown_plot as dp
 # import json
@@ -91,7 +92,8 @@ app.layout = dbc.Container([
                     html.H2('Line Plot', className = 'btn btn-warning btn-lg'),
                     html.Iframe(
                         id = 'line_plot',
-                        style={'border-width': '0', 'width': '100%', 'height': '400px'})
+                        style={'border-width': '0', 'width': '100%', 'height': '400px'},
+                        srcDoc = create_scatter_plot(ymin=1800, ymax=2022, value_ctry=[]))
                 ]),
                 dbc.Col([
                     html.H2('DropDown Plot', className = 'btn btn-warning btn-lg'),
@@ -117,14 +119,14 @@ app.layout = dbc.Container([
 def update_map_plot(value, value_country):
     return create_map_plot(value[0], value[1], value_country)
 
-# # App callback for scatter_plot
-# @app.callback(
-#     Output('scatter_plot', 'srcDoc'),
-#     Input('year_slider', 'value'),
-#     Input('country_select', 'value')
-# )
-# def update_scatter_plot(value, value_country):
-#     return create_scatter_plot(value[0], value[1], value_country)
+# App callback for scatter_plot
+@app.callback(
+    Output('scatter_plot', 'srcDoc'),
+    Input('year_slider', 'value'),
+    Input('country_select', 'value')
+)
+def update_scatter_plot(value, value_country):
+    return create_scatter_plot(value[0], value[1], value_country)
 
 # # App callback for bar_plot
 # @app.callback(

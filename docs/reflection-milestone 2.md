@@ -1,0 +1,5 @@
+## Reflections for Milestone 2
+
+In this milestone, we have attempted to create three plots. First, a map plot which highlights the intensity of earthquakes and the countries that were affected by the tsunami (underwater earthquakes). Second, a scatter plot to plot the trend of the earthquakes according to its intensity. Third, a bar chart to highlight the number of instance of tsunamis per tsunami intensity (which is different from the magnitude of the earthquake - it is a categorical variable).
+
+The user will be able to toggle the specific years and countries that they will like to examine on the left sidebar. Doing so will allow the user to change the output of both the map_plot and scatter_plot. The bar chart will only take in the values for the years, and not the countries as it will display the total number of instances of tsunami per tsunami intensity.
