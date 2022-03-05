@@ -11,11 +11,11 @@ def create_scatter_plot(year_start, year_end, countries):
                 scale=alt.Scale(domain=(5.5, 10))),
         y=alt.Y('total_deaths',
                 title='Total Deaths (log-transformed), per Event',
-                scale=alt.Scale(type='log', base=10)),
+                scale=alt.Scale(type='log')),
         color='country',
         tooltip=['year', 'mercalli_intensity', 'country', 'total_deaths']
     ).interactive(
-    )
+    ).properties(width=300, height=150)
     return chart.to_html()
 
 def get_data(year_start, year_end, countries):
@@ -33,11 +33,14 @@ def get_data(year_start, year_end, countries):
     )
     if countries != []:
         tsunami_events = (
-            tsunami_events[tsunami_events["country"].isin(countries)]
-        )
-    
+            tsunami_events[tsunami_events["country"].isin(countries)])
+        
+
     tsunami_events = tsunami_events[tsunami_events['total_deaths'].notna()]
     tsunami_events['mercalli_intensity'] = pd.cut(tsunami_events['earthquake_magnitude'],
                                       bins=[1, 2, 4, 5, 6, 7, 10],
                                       labels=["I", "II-III", "IV–V", "VI–VII", "VII–IX", "VIII or higher"]).astype(str)
+
+
+    
     return tsunami_events

@@ -2,8 +2,7 @@ import dash
 from dash import Dash, html, dcc, State, Input, Output
 from components.map_plot import create_map_plot
 from components.scatter_plot import create_scatter_plot
-# from .. import dropdown_plot as dp
-# import json
+from components.dropdown import create_bar_plot
 
 import dash_bootstrap_components as dbc
 import pandas as pd
@@ -82,6 +81,31 @@ world_plot_card = dbc.Card(
     style = {'padding':0}
 )
 
+scatter_plot_card = dbc.Card(
+    dbc.CardBody(
+        [html.H4('Total Deaths by Earthquake Magnitude', className = 'card-title'),
+        html.Iframe(
+            id = 'scatter_plot',
+            style={'border-width': '0', 'height': '270px','width': '100%'},
+            srcDoc=create_scatter_plot(year_start=1800, year_end=2022, countries=[]) 
+        )]
+    ),
+    style = {'padding':0}
+)
+
+bar_chart_card = dbc.Card(
+    dbc.CardBody(
+        [html.H4('Top 10 most intense tsunami in given years', className = 'card-title'),
+        html.Iframe(
+            id = 'bar_plot',
+            style={'border-width': '0', 'height': '270px','width': '100%'},
+            srcDoc=create_bar_plot(year_start=1800, year_end=2022)
+        )]
+    ),
+    style = {'padding':0}
+)
+
+
 app.layout = dbc.Container([
     navbar,
     dbc.Row([
@@ -121,20 +145,11 @@ app.layout = dbc.Container([
             ], style = {'margin': 'auto', 'width': '880px'}),
             dbc.Row([
                 dbc.Col([
-                    html.H2('Total Deaths by Earthquake Magnitude', className = 'btn btn-warning btn-lg'),
-                    html.Br(),
-                    html.Iframe(
-                        id = 'scatter_plot',
-                        style={'border-width': '0', 'width': '120%','height': '100%'},
-                        srcDoc=create_scatter_plot(year_start=1800, year_end=2022, countries=[]))
-                ]),
+                    scatter_plot_card
+                ], style = {'margin': 'auto', 'width': '400px'}),
                 dbc.Col([
-                    html.H2('DropDown Plot', className = 'btn btn-warning btn-lg'),
-                    html.Iframe(
-                        id = 'bar_chart',
-                        style={'border-width': '0', 'width': '400px', 'height': '400px'}
-                        )
-                ])
+                    bar_chart_card
+                ], style = {'margin': 'auto', 'width': '400px'})
             ])
         ],
         style = CONTENT_STYLE)
@@ -163,13 +178,13 @@ def update_map_plot(value, value_country):
 def update_scatter_plot(value, value_country):
     return create_scatter_plot(value[0], value[1], value_country)
 
-# # App callback for bar_plot
-# @app.callback(
-#     Output('bar_chart', 'srcDoc'),
-#     Input('year_slider', 'value')
-# )
-# def bar_chart(value, value_country):
-#     return create_bar_chart(value)
+# App callback for bar_plot
+@app.callback(
+    Output('bar_plot', 'srcDoc'),
+    Input('year_slider', 'value')
+)
+def update_bar_plot(value):
+    return create_bar_plot(value[0], value[1])
 
 @app.callback(
     Output("navbar-collapse", "is_open"),
