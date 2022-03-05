@@ -18,6 +18,7 @@ country_list = sorted(list(countries)) # countries are listed alphabetically
 app = dash.Dash(
     __name__, title = "Tsunami History", external_stylesheets=[dbc.themes.QUARTZ]
 )
+
 server = app.server
 
 # Creating style for both sidebar and plots
@@ -182,4 +183,3 @@ def toggle_navbar_collapse(n, is_open):
 
 if __name__ == '__main__': 
     app.run_server(debug=True)
-
