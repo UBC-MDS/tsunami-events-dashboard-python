@@ -30,7 +30,7 @@ def create_map_plot(year_start, year_end, countries):
                 tooltip=[alt.Tooltip("name:N", title="Country"),
                          alt.Tooltip("count:Q", title="Total Tsunami Hits")])
         .project("naturalEarth1")
-        .properties(width=700, height=350)
+        .properties(width=730, height=350)
     )
 
     tsunami_events["legend"] = "Tsunami Origin"

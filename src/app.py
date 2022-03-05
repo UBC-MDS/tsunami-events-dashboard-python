@@ -27,7 +27,6 @@ SIDEBAR_STYLE = {
     "left": 0,
     "bottom": 0,
     "width": "20rem",
-    "padding": "2rem 1rem",
     "z-index": 4000000,
     'background-color': 'rgba(255,255,255,.25)'
 
@@ -35,7 +34,6 @@ SIDEBAR_STYLE = {
 
 CONTENT_STYLE = {
     "margin-left": "20rem",
-    "margin-right": "2rem",
     "z-index": -1,
 }
 # Structure of app, including selection criteria components
@@ -49,7 +47,7 @@ navbar = dbc.Navbar(
                 dbc.Row(
                     [
                         # dbc.Col(html.Img(src=PLOTLY_LOGO, height="30px")),
-                        dbc.Col(dbc.NavbarBrand("Tsunami Events Dashboard", className="ms-2")),
+                        dbc.Col(dbc.NavbarBrand("Tsunami Events Dashboard")),
                     ],
                     align="center",
                     className="g-0",
@@ -66,8 +64,9 @@ navbar = dbc.Navbar(
             ),
         ],
         style = {
-        'margin-left': '15px',
-        'font-weight': "600"}
+            'margin-left': '1.2rem',
+            'font-weight': "600"
+        }
     ),
     color="dark",
     dark=True,
@@ -79,7 +78,7 @@ world_plot_card = dbc.Card(
         style = {'margin-bottom': '0px'}),
         html.Iframe(
             id='map_plot',
-            style={'border-width': '0', 'height': '380px', 'width': '100%'},
+            style={'border-width': '0', 'height': '390px', 'width': '100%'},
             srcDoc=create_map_plot(year_start=1800, year_end=2022, countries=[]))
         ], style = {'padding': '15px', 'padding-bottom': '0px'}
     ),
@@ -92,11 +91,11 @@ scatter_plot_card = dbc.Card(
         style = {'margin-bottom': '0px'}),
         html.Iframe(
             id = 'scatter_plot',
-            style={'border-width': '0', 'height': '220px','width': '100%'},
+            style={'border-width': '0', 'height': '250px','width': '100%'},
             srcDoc=create_scatter_plot(year_start=1800, year_end=2022, countries=[]) 
         )], style = {'padding': '15px', 'padding-bottom': '0px'}
     ),
-    style = {'padding':0}
+    style = {'padding': 0}
 )
 
 bar_chart_card = dbc.Card(
@@ -105,11 +104,11 @@ bar_chart_card = dbc.Card(
         style = {'margin-bottom': '0px'}),
         html.Iframe(
             id = 'bar_plot',
-            style={'border-width': '0', 'height': '220px','width': '100%'},
+            style={'border-width': '0', 'height': '250px','width': '100%'},
             srcDoc=create_bar_plot(year_start=1800, year_end=2022)
         )], style = {'padding': '15px', 'padding-bottom': '0px'}
     ),
-    style = {'padding':0}
+    style = {'padding': 0}
 )
 
 app.layout = dbc.Container([
@@ -149,7 +148,7 @@ app.layout = dbc.Container([
         dbc.Col([
             dbc.Row([
                 world_plot_card
-            ], style = {'margin': 'auto', 'width': '800px', 'padding':'0px'}),
+            ], style = {'margin': 'auto', 'width': '820px', 'padding':'0px'}),
             html.Br(),
             dbc.Row([
                 dbc.Col([
@@ -166,7 +165,8 @@ app.layout = dbc.Container([
     style = {
         'backgroundColor': 'black',
         'padding': '0px',
-        'height': '100vh'
+        'height': '100vh',
+        "overflow": "hidden"
 })
 
 # App callback for map_plot
