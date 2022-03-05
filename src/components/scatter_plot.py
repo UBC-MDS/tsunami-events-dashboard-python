@@ -39,16 +39,16 @@ def create_scatter_plot(year_start=1900, year_end=2022, countries=[]):
                 scale=alt.Scale(domain=(5.5, 10)),
                 axis=alt.Axis(grid=False)),
         y=alt.Y('total_deaths',
-                title='Total Deaths (log-transformed), per Event',
+                title='Total Deaths (log-scale), per Event',
                 scale=alt.Scale(type='log')),
         color='country',
         tooltip=['year', 'mercalli_intensity', 'country', 'total_deaths']
     ).interactive(
-    )
+    ).properties(width=180, height=150)
     return chart.to_html()
 
 
-def get_data(year_start=1900, year_end=2022, countries=[]):
+def get_data(year_start=1802, year_end=2022, countries=[]):
     """
     The function to return the processed dataframe of original data including   
         a new column computing the Mercalli Intensity scale per tsunami event, 
