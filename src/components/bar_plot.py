@@ -6,6 +6,22 @@ import pandas as pd
 PROCESSED_DATA_PATH = "data/processed/tsunami-events.csv"
 
 def preprocess(year_start, year_end):
+        """The function to return the processed dataframe with a new index column
+        and combination column of the country and year. Also filters the df
+        based on the callback year slider for tsunamis occurring between
+        specific dates, then reorders by tsunami intensity.
+    Parameters
+    ----------
+    year_start : int
+        the lower bound of the range of years selected by user
+    year_end : int
+        the upper bound of the range of years selected by user
+    Returns
+    -------
+    df:
+        a processed dataframe with additional columns and filtered
+        data
+    """
     df = pd.read_csv(PROCESSED_DATA_PATH)
     df['tsunami_instance'] = range(1, len(df) + 1)
     df['tsunami_instance'] = df.index
@@ -17,6 +33,20 @@ def preprocess(year_start, year_end):
     return df
 
 def create_bar_plot(year_start, year_end):
+        """The function to create a bar graph of the highest intensity
+        tsunamis between the year_start and year_end.
+    Parameters
+    ----------
+    year_start : int
+        the lower bound of the range of years selected by user
+    year_end : int
+        the upper bound of the range of years selected by user
+    Returns
+    -------
+    bar plot object
+        horizontal bar graph of greatest intensity tsunamis with tooltip
+        to glean further information when hovering over each bar.
+    """
     df = preprocess(year_start, year_end)
     chart = alt.Chart(df).mark_bar().encode(
         x=alt.X('tsunami_intensity:Q', title = 'Tsunami Intensity', scale=alt.Scale(domain=(0, 12))),
