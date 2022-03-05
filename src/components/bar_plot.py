@@ -13,7 +13,7 @@ def preprocess(year_start, year_end):
     df = df.query('tsunami_intensity > 0')
     df = df.query(f"{year_start} <= year <= {year_end}")
     df = df.sort_values(by=['tsunami_intensity'], ascending = False)
-    df = df[0:15]
+    df = df[0:10]
     return df
 
 def create_bar_plot(year_start, year_end):
