@@ -65,7 +65,8 @@ def create_map_plot(year_start, year_end, countries):
                                               orient='top-left')),
             tooltip=[alt.Tooltip("earthquake_magnitude",
                     title="Earthquake Magnitude")]
-        ).properties(width=300, height=100)
+        )
+        .properties(width=300, height=100)
     )
 
     return (map + tsunami_spots).to_html()

@@ -78,7 +78,7 @@ world_plot_card=dbc.Card(
 
 scatter_plot_card=dbc.Card(
     dbc.CardBody(
-        [html.H6('Top 10 Countries\' Total Deaths by Earthquake Magnitude', className='card-title',
+        [html.H6('Total Deaths and Earthquake Magnitude per Event', className='card-title',
         style={'margin-bottom': '0px'}),
         html.Iframe(
             id='scatter_plot',
@@ -198,4 +198,4 @@ def toggle_navbar_collapse(n, is_open):
     return is_open
 
 if __name__ == '__main__': 
-    app.run_server()
+    app.run_server(debug=True)

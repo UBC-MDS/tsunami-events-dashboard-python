@@ -32,16 +32,25 @@ def create_scatter_plot(year_start=1900, year_end=2022, countries=[]):
         scatter plot chart of earthquake intensity versus total deaths 
         recorded (on a log-scale)
     """
-    chart = alt.Chart(get_data(year_start, year_end, countries)
-                      ).mark_point(opacity=0.65, size=20).encode(
+    chart = alt.Chart(
+        get_data(year_start, year_end, countries)
+    ).mark_point(opacity=0.65, size=20).encode(
         x=alt.X('earthquake_magnitude',
                 title='Earthquake Magnitude (Richter Scale)',
                 scale=alt.Scale(domain=(5.5, 10)),
                 axis=alt.Axis(grid=False)),
         y=alt.Y('total_deaths',
                 title='Total Deaths (log-scale), per Event',
-                scale=alt.Scale(type='log')),
-        color='country',
+                scale=alt.Scale(type='log', domainMin=0.1),
+                axis=alt.Axis(
+                    labelColor=alt.condition(
+                        'datum.value < 1',
+                        alt.value('white'),
+                        alt.value('black')
+                    )
+                )),
+        color=alt.Color('country',
+                        legend=alt.Legend(title="Countries (up to Top 10)")),
         tooltip=['year', 'mercalli_intensity', 'country', 'total_deaths']
     ).interactive(
     ).properties(
