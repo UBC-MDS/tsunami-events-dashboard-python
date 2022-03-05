@@ -16,7 +16,7 @@ The scatter plot will highlight the top 10 countries from 1802 to 2022.
 The bar chart will only take in the values for the years, and not the countries as it 
 will display the top 10 most intense tsunamis across the world based on time period specified. 
 
-### What could be improved
+## What could be improved
 The structure of the dashboard needs to be improved greatly to make it more streamlined. Moreover, we would like to increase the functionality of the sidebar where users can collapse it,
 such that the plot is rendered larger. Moreover, we would like to add a buttom besides the scatter plot and bar chart, to inform readers about how to interpret the 'Richter Scale' and 'Tsunami Intensity'.
 
