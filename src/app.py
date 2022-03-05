@@ -143,6 +143,7 @@ app.layout = dbc.Container([
             dbc.Row([
                 world_plot_card
             ], style = {'margin': 'auto', 'width': '880px'}),
+            html.Br(),
             dbc.Row([
                 dbc.Col([
                     scatter_plot_card

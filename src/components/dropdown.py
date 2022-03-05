@@ -10,6 +10,7 @@ def preprocess(year_start, year_end):
     df['tsunami_instance'] = range(1, len(df) + 1)
     df['tsunami_instance'] = df.index
     df['combine'] = df['country'].astype(str) + ', ' + df['year'].astype(str)
+    df = df.query('tsunami_intensity > 0')
     df = df.query(f"{year_start} <= year <= {year_end}")
     df = df.sort_values(by=['tsunami_intensity'], ascending = False)
     df = df[0:10]
@@ -21,8 +22,7 @@ def create_bar_plot(year_start, year_end):
         x=alt.X('tsunami_intensity:Q', title = 'Tsunami Intensity', scale=alt.Scale(domain=(0, 12))),
         y=alt.Y('tsunami_instance:N', sort = '-x', title = 'Country', axis = alt.Axis(labelExpr="datum.country")),
         color=alt.Color('country:O'),
-        tooltip=("country:O", "location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O")
-        ).properties(width=400, height=220)
+        tooltip=("country:O", "location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"))
     
     text = chart.mark_text(align="left", baseline="middle", dx = 3).encode(
         text= 'combine:O')
