@@ -2,7 +2,7 @@
 
 ## Accessing the App via Heroku
 
-Link to Heroku app: [tsunami-events-dashboard](https://dashboard.heroku.com/apps/tsunami-events-dashboard)
+Link to Live App: [Tsunami Events Dashboard](https://tsunami-events-dashboard.herokuapp.com/)
 
 ## Description of the App Interface
 
