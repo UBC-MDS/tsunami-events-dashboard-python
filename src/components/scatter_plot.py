@@ -1,26 +1,91 @@
 import altair as alt
-from dash import Dash, dcc, html, Input, Output
 import pandas as pd
 
-PROCESSED_DATA_PATH = "data/processed/tsunami-events.csv"
+PROCESSED_DATA_PATH = 'data/processed/tsunami-events.csv'
+
+tsunami_df = pd.read_csv('data/processed/tsunami-events.csv')
+
+years = tsunami_df['year'].dropna().unique()
+countries = tsunami_df['country'].dropna().unique()
+country_list = sorted(list(countries))
+
 
 def create_scatter_plot(year_start=1900, year_end=2022, countries=[]):
-    chart = alt.Chart(get_data(year_start, year_end, countries)).mark_point(opacity=0.65, size=20).encode(
+    """
+    The function to create a scatter plot of earthquake intensity
+        versus total deaths recorded (on a log-scale) per tsunami event 
+        between the year_start and year_end for countries specified.
+
+    Parameters
+    ----------
+    year_start : int
+        the lower bound of the range of years selected by user
+    year_end : int
+        the upper bound of the range of years selected by user
+    countries : list
+        the selection of countries selected by user
+
+    Returns
+    -------
+    scatter plot object
+        scatter plot chart of earthquake intensity versus total deaths 
+        recorded (on a log-scale)
+    """
+    chart = alt.Chart(
+        get_data(year_start, year_end, countries)
+    ).mark_point(opacity=0.65, size=20).encode(
         x=alt.X('earthquake_magnitude',
                 title='Earthquake Magnitude (Richter Scale)',
-                scale=alt.Scale(domain=(5.5, 10))),
+                scale=alt.Scale(domain=(5.5, 10)),
+                axis=alt.Axis(grid=False)),
         y=alt.Y('total_deaths',
                 title='Total Deaths (log-scale), per Event',
-                scale=alt.Scale(type='log')),
-        color='country',
+                scale=alt.Scale(type='log', domainMin=0.1),
+                axis=alt.Axis(
+                    labelColor=alt.condition(
+                        'datum.value < 1',
+                        alt.value('white'),
+                        alt.value('black')
+                    )
+                )),
+        color=alt.Color('country',
+                        legend=alt.Legend(title="Countries (up to Top 10)")),
         tooltip=['year', 'mercalli_intensity', 'country', 'total_deaths']
     ).interactive(
-    ).properties(width=180, height=150)
+    ).properties(
+        width=200, height=175
+    ).configure_legend(
+        titleFontSize=10,
+        labelFontSize=7
+    ) 
     return chart.to_html()
 
 
 def get_data(year_start=1802, year_end=2022, countries=[]):
+    """
+    The function to return the processed dataframe of original data including   
+        a new column computing the Mercalli Intensity scale per tsunami event, 
+        subsetting for observations between year_start and year_end, for the 
+        countries specified. In addition, should more than 10 countries be 
+        specified by the user, the function only returns observations for 
+        the 10 countries whose individual earthquake observations recorded 
+        largest magnitude per the year range and countries specified. 
 
+    Parameters
+    ----------
+    year_start : int
+        the lower bound of the range of years selected by user
+    year_end : int
+        the upper bound of the range of years selected by user
+    countries : list
+        the selection of countries selected by user
+
+    Returns
+    -------
+    df:
+        a processed dataframe with additional columns and filtered
+        data, comprising no more than 10 countries
+    """
     tsunami_events = pd.read_csv(PROCESSED_DATA_PATH)
 
     if not (year_start and year_end and year_start <= year_end):
@@ -47,8 +112,10 @@ def get_data(year_start=1802, year_end=2022, countries=[]):
 
         return tsunami_events.loc[(tsunami_events['year'] > year_start) &
                                   (tsunami_events['year'] < year_end) &
-                                  (tsunami_events['country'].isin(countries)) &
-                                  (tsunami_events['country'].isin(countries_top10))]
+                                  (tsunami_events['country'].isin(
+                                      countries)) &
+                                  (tsunami_events['country'].isin(
+                                      countries_top10))]
     else:
         return tsunami_events.loc[(tsunami_events['year'] > year_start) &
                                   (tsunami_events['year'] < year_end) &

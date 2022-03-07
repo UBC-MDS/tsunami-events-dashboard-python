@@ -1,15 +1,13 @@
 import altair as alt
-from dash import Dash, dcc, html, Input, Output
-from vega_datasets import data
 import pandas as pd
 
 PROCESSED_DATA_PATH = "data/processed/tsunami-events.csv"
 
 def preprocess(year_start, year_end):
-        """The function to return the processed dataframe with a new index column
-        and combination column of the country and year. Also filters the df
-        based on the callback year slider for tsunamis occurring between
-        specific dates, then reorders by tsunami intensity.
+    """The function to return the processed dataframe with a new index column
+    and combination column of the country and year. Also filters the df
+    based on the callback year slider for tsunamis occurring between
+    specific dates, then reorders by tsunami intensity.
     Parameters
     ----------
     year_start : int
@@ -33,8 +31,8 @@ def preprocess(year_start, year_end):
     return df
 
 def create_bar_plot(year_start, year_end):
-        """The function to create a bar graph of the highest intensity
-        tsunamis between the year_start and year_end.
+    """The function to create a bar graph of the highest intensity
+    tsunamis between the year_start and year_end.
     Parameters
     ----------
     year_start : int
@@ -53,8 +51,7 @@ def create_bar_plot(year_start, year_end):
         y=alt.Y('tsunami_instance:N', sort = '-x', title = 'Country', axis = alt.Axis(labelExpr="datum.country")),
         color=alt.Color('country:O'),
         tooltip=("country:O", "location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O")
-        ).properties(width=240, height=160)
-        tooltip=("country:O", "location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O"))
+        ).properties(width=250, height=180)
     
     text = chart.mark_text(align="left", baseline="middle", dx = 3).encode(
         text= 'combine:O')
