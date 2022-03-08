@@ -89,7 +89,7 @@ scatter_plot_card=dbc.Card(
 
 bar_chart_card=dbc.Card(
     dbc.CardBody(
-        [html.H6('10 Most Intense Tsunamis by Country', className='card-title',
+        [html.H6('Most Intense Tsunamis by Country', className='card-title',
         style={'margin-bottom': '0px'}),
         html.Iframe(
             id='bar_plot',
