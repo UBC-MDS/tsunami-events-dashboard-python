@@ -26,7 +26,7 @@ To run and explore the app locally, clone the git repo and install required depe
 
 Then, run the app:
 
-    python src/app.py
+    gunicorn src.app:server
 
 ## Built with
 
