@@ -61,5 +61,4 @@ def create_bar_plot(year_start, year_end):
         text= 'combine:O')
     
     plot = chart + text
-    plot.properties
     return plot.to_html()
