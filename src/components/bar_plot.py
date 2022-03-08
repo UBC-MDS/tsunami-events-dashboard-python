@@ -53,7 +53,7 @@ def create_bar_plot(year_start, year_end):
         tooltip=("country:O", "location_name:O", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O")
         ).properties(width=250, height=180).configure_legend(
         titleFontSize=10,
-        labelFontSize=9)
+        labelFontSize=9
     ) 
     
     text = chart.mark_text(align="left", baseline="middle", dx = 3).encode(
