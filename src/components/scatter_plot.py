@@ -1,3 +1,4 @@
+from os import lseek
 import altair as alt
 import pandas as pd
 
@@ -50,14 +51,18 @@ def create_scatter_plot(year_start=1900, year_end=2022, countries=[]):
                 )),
         color=alt.Color('country',
                         legend=alt.Legend(title="Countries (up to Top 10)")),
-        tooltip=['year', 'mercalli_intensity', 'country', 'total_deaths']
+        tooltip=[
+            alt.Tooltip("year", title="Year"),
+            alt.Tooltip("mercalli_intensity", title="Mercalli Intensity"),
+            alt.Tooltip("country", title="Country"),
+            alt.Tooltip("total_deaths", title="Total Deaths")]
     ).interactive(
     ).properties(
         width=200, height=175
     ).configure_legend(
         titleFontSize=10,
         labelFontSize=7
-    ) 
+    )
     return chart.to_html()
 
 

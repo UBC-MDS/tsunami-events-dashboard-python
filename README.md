@@ -14,7 +14,7 @@ Our proposal can be found via this link: [proposal](docs/proposal.md)
 
 ## Dashboard Sketch
 
-![dashboard sketch](img/tsunami_sketch.jpg)
+![dashboard sketch](img/updated_dashboard_example_v2.png)
 
 ## Accessing the App Locally
 
@@ -26,7 +26,7 @@ To run and explore the app locally, clone the git repo and install required depe
 
 Then, run the app:
 
-    python src/app.py
+    gunicorn src.app:server
 
 ## Built with
 
