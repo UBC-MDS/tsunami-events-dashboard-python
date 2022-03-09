@@ -29,6 +29,8 @@ def create_map_plot(year_start, year_end, countries):
     counts, tsunami_events = preprocess_data(year_start, year_end, countries)
     mean_count = tsunami_events.groupby("country").size().mean()
 
+
+    map_click = alt.selection_multi(fields=['name'])
     map = (
         alt.Chart(world_map)
         .mark_geoshape(stroke="grey", strokeWidth=0.3)
@@ -36,17 +38,22 @@ def create_map_plot(year_start, year_end, countries):
             lookup="id",
             from_=alt.LookupData(counts, "id", ["name", "count"])
         )
-        .encode(color=alt.condition(
-            "datum.count>0.0",
-            alt.Color("count:Q",
-                    scale=alt.Scale(scheme='blues',
-                                    domainMin=1,
-                                    domainMid=mean_count),
-                    legend=alt.Legend(orient='bottom-left'),
-                    title="Total Tsuanami Hits"),
-            alt.ColorValue("white")),
-                tooltip=[alt.Tooltip("name:N", title="Country"),
-                         alt.Tooltip("count:Q", title="Total Tsunami Hits")])
+        .encode(
+            color=alt.condition(
+                "datum.count>0.0",
+                alt.Color("count:Q",
+                        scale=alt.Scale(scheme='blues',
+                                        domainMin=1,
+                                        domainMid=mean_count),
+                        legend=alt.Legend(orient='bottom-left'),
+                        title="Total Tsuanami Hits"),
+                alt.ColorValue("white")
+            ),
+            tooltip=[alt.Tooltip("name:N", title="Country"),
+                        alt.Tooltip("count:Q", title="Total Tsunami Hits")],
+            opacity=alt.condition(map_click, alt.value(1), alt.value(0.2))
+        )
+        .add_selection(map_click)
         .project("naturalEarth1")
         .properties(width=730, height=350)
     )
