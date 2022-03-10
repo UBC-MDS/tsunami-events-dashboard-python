@@ -14,7 +14,7 @@ Our proposal can be found via this link: [proposal](docs/proposal.md)
 
 ## Dashboard Sketch
 
-![dashboard sketch](img/updated_dashboard_example_v2.png)
+![dashboard sketch](img/tsunami_sketch.png)
 
 ## Accessing the App Locally
 
