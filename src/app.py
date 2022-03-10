@@ -13,8 +13,9 @@ countries=tsunami_df['country'].dropna().unique()
 country_list=sorted(list(countries))
 
 app=dash.Dash(
-    __name__, title="🌊 Tsunami Events", external_stylesheets=[dbc.themes.QUARTZ]
+    __name__, external_stylesheets=[dbc.themes.QUARTZ]
 )
+app.title = 'Tsunami Events'
 server=app.server
 
 SIDEBAR_STYLE={
