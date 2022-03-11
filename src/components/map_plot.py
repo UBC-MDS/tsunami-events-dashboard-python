@@ -3,7 +3,7 @@ import pandas as pd
 from vega_datasets import data
 
 PROCESSED_DATA_PATH = "data/processed/tsunami-events.csv"
-COUNTRY_IDS_FILE_PATH = "data/processed/world-110m-country-names.tsv"
+COUNTRY_CODES_FILE_PATH = "data/processed/country_codes.csv"
 
 def create_map_plot(year_start, year_end, countries):
     """Create a world map plot with countries colored by no. of tsunami
@@ -36,7 +36,7 @@ def create_map_plot(year_start, year_end, countries):
         .mark_geoshape(stroke="grey", strokeWidth=0.3)
         .transform_lookup(
             lookup="id",
-            from_=alt.LookupData(counts, "id", ["name", "count"])
+            from_=alt.LookupData(counts, "country-code", ["name", "count"])
         )
         .encode(
             color=alt.condition(
@@ -62,7 +62,7 @@ def create_map_plot(year_start, year_end, countries):
 
     tsunami_spots = (
         alt.Chart(tsunami_events)
-        .mark_circle(size=5)
+        .mark_circle(size=5, opacity=0.35)
         .encode(
             latitude="latitude",
             longitude="longitude",
@@ -99,7 +99,7 @@ def preprocess_data(year_start, year_end, countries):
     """
 
     tsunami_events = pd.read_csv(PROCESSED_DATA_PATH)
-    country_ids = pd.read_csv(COUNTRY_IDS_FILE_PATH, sep="\t")
+    country_codes = pd.read_csv(COUNTRY_CODES_FILE_PATH)
 
     if not (year_start and year_end and year_start <= year_end):
         raise ValueError("Invalid value for year start and/or year end")
@@ -116,7 +116,7 @@ def preprocess_data(year_start, year_end, countries):
         )
     
     counts = tsunami_events.groupby("country").size().reset_index(name='count')
-    counts = counts.merge(country_ids,
+    counts = counts.merge(country_codes,
                           how="right",
                           left_on="country",
                           right_on="name")
