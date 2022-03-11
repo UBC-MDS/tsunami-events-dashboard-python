@@ -18,7 +18,7 @@ Our proposal can be found via this link: [proposal](docs/proposal.md)
 
 ## Accessing the App Locally
 
-To run and explore the app locally, clone the git repo and install required dependencies:
+To run and explore the app locally, clone the git repo and follow the commands. Please ensure that Docker is running on your machine.
 
     git clone https://github.com/UBC-MDS/tsunami-events-dashboard-python.git
 
