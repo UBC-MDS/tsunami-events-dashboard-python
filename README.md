@@ -22,11 +22,12 @@ To run and explore the app locally, clone the git repo and install required depe
 
     git clone https://github.com/UBC-MDS/tsunami-events-dashboard-python.git
 
-    pip install -r requirements.txt
+    cd tsunami-events-dashboard-python
 
-Then, run the app:
+    docker-compose up
 
-    gunicorn src.app:server
+Then, run the app using the following [URL](http://localhost:8000/)
+
 
 ## Built with
 
