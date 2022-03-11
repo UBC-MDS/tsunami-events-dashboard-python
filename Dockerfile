@@ -15,4 +15,4 @@ COPY src/ ./
 COPY data/ ./data/
 
 # Finally, run gunicorn.
-CMD [ "gunicorn", "--workers=5", "--threads=1", "-b 0.0.0.0:8000", "src.app:server"]
+CMD [ "gunicorn", "--workers=5", "--threads=1", "-b 0.0.0.0:8000", "app:server"]
