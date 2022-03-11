@@ -2,9 +2,9 @@ import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
 from dash import html, dcc, State, Input, Output
-from .components.map_plot import create_map_plot
-from .components.scatter_plot import create_scatter_plot
-from .components.bar_plot import create_bar_plot
+from components.map_plot import create_map_plot
+from components.scatter_plot import create_scatter_plot
+from components.bar_plot import create_bar_plot
 
 tsunami_df=pd.read_csv('data/processed/tsunami-events.csv')
 
@@ -13,8 +13,9 @@ countries=tsunami_df['country'].dropna().unique()
 country_list=sorted(list(countries))
 
 app=dash.Dash(
-    __name__, title="🌊 Tsunami Events", external_stylesheets=[dbc.themes.QUARTZ]
+    __name__, external_stylesheets=[dbc.themes.QUARTZ]
 )
+app.title = 'Tsunami Events'
 server=app.server
 
 SIDEBAR_STYLE={
