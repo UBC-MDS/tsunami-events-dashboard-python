@@ -2,9 +2,9 @@ import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
 from dash import html, dcc, State, Input, Output
-from .components.map_plot import create_map_plot
-from .components.scatter_plot import create_scatter_plot
-from .components.bar_plot import create_bar_plot
+from components.map_plot import create_map_plot
+from components.scatter_plot import create_scatter_plot
+from components.bar_plot import create_bar_plot
 
 tsunami_df=pd.read_csv('data/processed/tsunami-events.csv')
 
@@ -179,7 +179,8 @@ def update_scatter_plot(value, value_country):
 # App callback for bar_plot
 @app.callback(
     Output('bar_plot', 'srcDoc'),
-    Input('year_slider', 'value')
+    Input('year_slider', 'value'),
+    Input('magnitude_slider', 'value')
 )
 def update_bar_plot(value):
     return create_bar_plot(value[0], value[1])
