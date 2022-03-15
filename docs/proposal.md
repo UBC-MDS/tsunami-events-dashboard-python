@@ -20,4 +20,4 @@ Victoria, a recent Accounting graduate from The University of British Columbia, 
 
 ## Dashboard Sketch
 
-![dashboard sketch](tsunami-events-dashboard-python/img/updated_dashboard_example_v2.png)
+![dashboard sketch](../img/updated_dashboard_example_v2.png)
