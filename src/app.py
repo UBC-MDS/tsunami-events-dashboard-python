@@ -2,9 +2,9 @@ import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
 from dash import html, dcc, State, Input, Output
-from components.map_plot import create_map_plot
-from components.scatter_plot import create_scatter_plot
-from components.bar_plot import create_bar_plot
+from .components.map_plot import create_map_plot
+from .components.scatter_plot import create_scatter_plot
+from .components.bar_plot import create_bar_plot
 
 tsunami_df=pd.read_csv('data/processed/tsunami-events.csv')
 
