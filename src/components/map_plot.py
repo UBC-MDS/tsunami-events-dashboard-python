@@ -5,18 +5,23 @@ from vega_datasets import data
 PROCESSED_DATA_PATH = "data/processed/tsunami-events.csv"
 COUNTRY_CODES_FILE_PATH = "data/processed/country_codes.csv"
 
-def create_map_plot(year_start, year_end, countries):
+def create_map_plot(year_start, year_end, countries,
+                    magnitude_start, magnitude_end):
     """Create a world map plot with countries colored by no. of tsunami
     hits and with origin points.
 
     Parameters
     ----------
     year_start : int
-        the lower bound of the range of years selected by user
+        the lower bound of the range of years selected by the user
     year_end : int
-        the upper bound of the range of years selected by user
+        the upper bound of the range of years selected by the user
     countries : list
         the list of countries to filter as selected by the user
+    magnitude_start : int
+        the lower bound of the earthquake magnitude selected by the user
+    magnitude_end : int
+        the upper bound of the earthquake magnitude selected by the user
     
     Returns
     -------
@@ -26,7 +31,8 @@ def create_map_plot(year_start, year_end, countries):
     """
     
     world_map = alt.topo_feature(data.world_110m.url, 'countries')
-    counts, tsunami_events = preprocess_data(year_start, year_end, countries)
+    counts, tsunami_events = preprocess_data(year_start, year_end, countries,
+                                             magnitude_start, magnitude_end)
     mean_count = tsunami_events.groupby("country").size().mean()
 
 
@@ -71,14 +77,17 @@ def create_map_plot(year_start, year_end, countries):
                             legend=alt.Legend(title="",
                                               orient='top-left')),
             tooltip=[alt.Tooltip("earthquake_magnitude",
-                    title="Earthquake Magnitude")]
+                                 title="Earthquake Magnitude"),
+                     alt.Tooltip("year",
+                                 title="Event Year")]
         )
         .properties(width=300, height=100)
     )
 
     return (map + tsunami_spots).to_html()
 
-def preprocess_data(year_start, year_end, countries):
+def preprocess_data(year_start, year_end, countries,
+                    magnitude_start, magnitude_end):
     """Reads and preprocesses the data for the map plot.
 
     Parameters
@@ -89,6 +98,10 @@ def preprocess_data(year_start, year_end, countries):
         the upper bound of the range of years selected by user
     countries : list
         the list of countries to filter as selected by the user
+    magnitude_start : int
+        the lower bound of the earthquake magnitude selected by the user
+    magnitude_end : int
+        the upper bound of the earthquake magnitude selected by the user
     
     Returns
     -------
@@ -108,7 +121,8 @@ def preprocess_data(year_start, year_end, countries):
          raise ValueError("Invalid value for countries")
 
     tsunami_events = tsunami_events.query(
-        f"{year_start} <= year <= {year_end}"
+        f"({year_start} <= year <= {year_end}) &"
+        f"({magnitude_start} <= earthquake_magnitude <= {magnitude_end})"
     )
     if countries != []:
         tsunami_events = (
