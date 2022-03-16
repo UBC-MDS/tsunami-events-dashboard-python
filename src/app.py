@@ -8,7 +8,6 @@ from components.bar_plot import create_bar_plot
 
 tsunami_df=pd.read_csv('data/processed/tsunami-events.csv')
 
-years=tsunami_df['year'].dropna().unique()
 countries=tsunami_df['country'].dropna().unique()
 country_list=sorted(list(countries))
 
@@ -82,7 +81,7 @@ scatter_plot_card=dbc.Card(
         html.Iframe(
             id='scatter_plot',
             style={'border-width': '0', 'height': '250px','width': '100%'},
-            srcDoc=create_scatter_plot(year_start=1800, year_end=2022, countries=[]) 
+            srcDoc=create_scatter_plot(year_start=1800, year_end=2022, magnitude_start=5, magnitude_end=9.5, countries=[]) 
         )], style={'padding': '15px', 'padding-bottom': '0px'}
     ),
     style={'padding': 0}
@@ -114,6 +113,18 @@ app.layout=dbc.Container([
                 value=[tsunami_df['year'].min(), tsunami_df['year'].max()],
                 marks=None, 
                 id='year_slider',
+                allowCross=False, 
+                tooltip={'placement': 'bottom',
+                            'always_visible': True}),
+            html.Br(),
+            html.Br(),
+            html.H6('Tsunami Magnitude of Interest', className='form-label'),
+            dcc.RangeSlider(
+                min=5,
+                max=9.5,
+                value=[tsunami_df['earthquake_magnitude'].min(), tsunami_df['earthquake_magnitude'].max()],
+                marks=None,
+                id='magnitude_slider',
                 allowCross=False, 
                 tooltip={'placement': 'bottom',
                             'always_visible': True}),
@@ -163,6 +174,7 @@ app.layout=dbc.Container([
 @app.callback(
     Output('map_plot', 'srcDoc'),
     Input('year_slider', 'value'),
+    # Input('magnitude_slider', 'value'),
     Input('country_select', 'value')
 )
 def update_map_plot(value, value_country):
@@ -172,18 +184,22 @@ def update_map_plot(value, value_country):
 @app.callback(
     Output('scatter_plot', 'srcDoc'),
     Input('year_slider', 'value'),
+    Input('magnitude_slider', 'value'),
     Input('country_select', 'value')
 )
-def update_scatter_plot(value, value_country):
-    return create_scatter_plot(value[0], value[1], value_country)
+def update_scatter_plot(value, value_magnitude, value_country):
+    return create_scatter_plot(value[0], value[1], value_magnitude[0], value_magnitude[1], value_country)
 
 # App callback for bar_plot
 @app.callback(
     Output('bar_plot', 'srcDoc'),
+    # Input('magnitude_slider', 'value'),
     Input('year_slider', 'value')
 )
 def update_bar_plot(value):
     return create_bar_plot(value[0], value[1])
+# def update_bar_plot(value, value_magnitude):
+    return create_bar_plot(value[0], value[1], value_magnitude[0], value_magnitude[1])
 
 # App callback for navbar
 @app.callback(
@@ -197,4 +213,4 @@ def toggle_navbar_collapse(n, is_open):
     return is_open
 
 if __name__ == '__main__': 
-    app.run_server()
+    app.run_server(debug=True)

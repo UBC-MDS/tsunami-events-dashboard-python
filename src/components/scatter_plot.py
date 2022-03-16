@@ -11,7 +11,7 @@ countries = tsunami_df['country'].dropna().unique()
 country_list = sorted(list(countries))
 
 
-def create_scatter_plot(year_start=1900, year_end=2022, countries=[]):
+def create_scatter_plot(year_start=1900, year_end=2022, magnitude_start=5, magnitude_end=9.5, countries=[]):
     """
     The function to create a scatter plot of earthquake intensity
         versus total deaths recorded (on a log-scale) per tsunami event 
@@ -33,7 +33,7 @@ def create_scatter_plot(year_start=1900, year_end=2022, countries=[]):
         recorded (on a log-scale)
     """
     chart = alt.Chart(
-        get_data(year_start, year_end, countries)
+        get_data(year_start, year_end, magnitude_start, magnitude_end, countries)
     ).mark_point(opacity=0.65, size=20).encode(
         x=alt.X('earthquake_magnitude',
                 title='Earthquake Magnitude (Richter Scale)',
@@ -66,7 +66,7 @@ def create_scatter_plot(year_start=1900, year_end=2022, countries=[]):
     return chart.to_html()
 
 
-def get_data(year_start=1802, year_end=2022, countries=[]):
+def get_data(year_start=1802, year_end=2022, magnitude_start=5, magnitude_end=9.5, countries=[]):
     """
     The function to return the processed dataframe of original data including   
         a new column computing the Mercalli Intensity scale per tsunami event, 
@@ -96,12 +96,20 @@ def get_data(year_start=1802, year_end=2022, countries=[]):
     if not (year_start and year_end and year_start <= year_end):
         raise ValueError("Invalid value for year start and/or year end")
 
+    if not (magnitude_start and magnitude_end and magnitude_start <= magnitude_end):
+        raise ValueError("Invalid value for magnitude start and/or magnitude end")
+
     if not countries and countries != []:
         raise ValueError("Invalid value for countries")
 
     tsunami_events = tsunami_events.query(
         f"{year_start} <= year <= {year_end}"
     )
+
+    tsunami_events = tsunami_events.query(
+        f"{magnitude_start} <= earthquake_magnitude <= {magnitude_end}"
+    )
+
     if countries == []:
         countries = tsunami_events.sort_values(by="earthquake_magnitude", ascending=False)[
             "country"].drop_duplicates().tolist()[:10]
@@ -117,6 +125,8 @@ def get_data(year_start=1802, year_end=2022, countries=[]):
 
         return tsunami_events.loc[(tsunami_events['year'] > year_start) &
                                   (tsunami_events['year'] < year_end) &
+                                  (tsunami_events['earthquake_magnitude'] > magnitude_start) &
+                                  (tsunami_events['earthquake_magnitude'] < magnitude_end) &
                                   (tsunami_events['country'].isin(
                                       countries)) &
                                   (tsunami_events['country'].isin(
@@ -124,4 +134,6 @@ def get_data(year_start=1802, year_end=2022, countries=[]):
     else:
         return tsunami_events.loc[(tsunami_events['year'] > year_start) &
                                   (tsunami_events['year'] < year_end) &
+                                  (tsunami_events['earthquake_magnitude'] > magnitude_start) &
+                                  (tsunami_events['earthquake_magnitude'] < magnitude_end) &
                                   (tsunami_events['country'].isin(countries))]
