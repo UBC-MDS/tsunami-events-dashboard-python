@@ -3,7 +3,7 @@ import pandas as pd
 
 PROCESSED_DATA_PATH = "data/processed/tsunami-events.csv"
 
-def preprocess(year_start, year_end):
+def preprocess(year_start, year_end, magnitude_start, magnitude_end):
     """The function to return the processed dataframe with a new index column
     and combination column of the country and year. Also filters the df
     based on the callback year slider for tsunamis occurring between
@@ -14,6 +14,10 @@ def preprocess(year_start, year_end):
         the lower bound of the range of years selected by user
     year_end : int
         the upper bound of the range of years selected by user
+    magnitude_start : int
+        the lower bound of the earthquake magnitude selected by user
+    magnitude_end : int
+        the upper bound of the earthquake magnitude selected by user
     Returns
     -------
     df:
@@ -26,11 +30,12 @@ def preprocess(year_start, year_end):
     df['combine'] = df['country'].astype(str) + ', ' + df['year'].astype(str)
     df = df.query('tsunami_intensity > 0')
     df = df.query(f"{year_start} <= year <= {year_end}")
+    df = df.query(f"{magnitude_start} <= earthquake_magnitude <= {magnitude_end}")
     df = df.sort_values(by=['tsunami_intensity'], ascending = False)
     df = df[0:10]
     return df
 
-def create_bar_plot(year_start, year_end):
+def create_bar_plot(year_start, year_end, magnitude_start, magnitude_end):
     """The function to create a bar graph of the highest intensity
     tsunamis between the year_start and year_end.
     Parameters
@@ -39,13 +44,17 @@ def create_bar_plot(year_start, year_end):
         the lower bound of the range of years selected by user
     year_end : int
         the upper bound of the range of years selected by user
+    magnitude_start : int
+        the lower bound of the earthquake magnitude selected by user
+    magnitude_end : int
+        the upper bound of the earthquake magnitude selected by user
     Returns
     -------
     bar plot object
         horizontal bar graph of greatest intensity tsunamis with tooltip
         to glean further information when hovering over each bar.
     """
-    df = preprocess(year_start, year_end)
+    df = preprocess(year_start, year_end, magnitude_start, magnitude_end)
     chart = alt.Chart(df).mark_bar().encode(
         x=alt.X('tsunami_intensity:Q', title = 'Tsunami Intensity', scale=alt.Scale(domain=(0, 12))),
         y=alt.Y('tsunami_instance:N', sort = '-x', title = 'Country', axis = alt.Axis(labelExpr="datum.country")),
