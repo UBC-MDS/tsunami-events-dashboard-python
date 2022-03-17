@@ -68,7 +68,8 @@ world_plot_card=dbc.Card(
         html.Iframe(
             id='map_plot',
             style={'border-width': '0', 'height': '390px', 'width': '100%'},
-            srcDoc=create_map_plot(year_start=1800, year_end=2022, countries=[]))
+            srcDoc=create_map_plot(year_start=1800, year_end=2022, countries=[],
+                                   magnitude_start = 1, magnitude_end = 10))
         ], style={'padding': '15px', 'padding-bottom': '0px'}
     ),
     style={'padding': 0}
@@ -139,7 +140,8 @@ app.layout=dbc.Container([
                 className='text-dark'),
             html.Hr(),
             html.P(
-                "A data visualisation app that allows viewers to observe the number and intensity of tsunamis based on years and countries",
+                "A data visualisation app that allows viewers to observe the number"
+                "and intensity of tsunamis based on years and countries",
                 className='form-label'
             )
         ],
@@ -178,7 +180,11 @@ app.layout=dbc.Container([
     Input('country_select', 'value')
 )
 def update_map_plot(value, value_country):
-    return create_map_plot(value[0], value[1], value_country)
+    return create_map_plot(year_start = value[0],
+                           year_end = value[1],
+                           countries = value_country,
+                           magnitude_start = 1,
+                           magnitude_end = 10)
 
 # App callback for scatter_plot
 @app.callback(
