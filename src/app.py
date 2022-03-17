@@ -2,9 +2,9 @@ import dash
 import dash_bootstrap_components as dbc
 import pandas as pd
 from dash import html, dcc, State, Input, Output
-from .components.map_plot import create_map_plot
-from .components.scatter_plot import create_scatter_plot
-from .components.bar_plot import create_bar_plot
+from components.map_plot import create_map_plot
+from components.scatter_plot import create_scatter_plot
+from components.bar_plot import create_bar_plot
 
 tsunami_df=pd.read_csv('data/processed/tsunami-events.csv')
 
@@ -94,7 +94,7 @@ bar_chart_card=dbc.Card(
         html.Iframe(
             id='bar_plot',
             style={'border-width': '0', 'height': '250px','width': '100%'},
-            srcDoc=create_bar_plot(year_start=1800, year_end=2022)
+            srcDoc=create_bar_plot(year_start=1800, year_end=2022, earthquake_lower= 0, earthquake_upper=9.5)
         )], style={'padding': '15px', 'padding-bottom': '0px'}
     ),
     style={'padding': 0}
@@ -113,6 +113,18 @@ app.layout=dbc.Container([
                 value=[tsunami_df['year'].min(), tsunami_df['year'].max()],
                 marks=None, 
                 id='year_slider',
+                allowCross=False, 
+                tooltip={'placement': 'bottom',
+                            'always_visible': True}),
+            html.Br(),
+            html.Br(),
+            html.H6('Tsunami Magnitude of Interest', className='form-label'),
+            dcc.RangeSlider(
+                min=5,
+                max=9.5,
+                value=[tsunami_df['earthquake_magnitude'].min(), tsunami_df['earthquake_magnitude'].max()],
+                marks=None,
+                id='magnitude_slider',
                 allowCross=False, 
                 tooltip={'placement': 'bottom',
                             'always_visible': True}),
@@ -182,8 +194,8 @@ def update_scatter_plot(value, value_country):
     Input('year_slider', 'value'),
     Input('magnitude_slider', 'value')
 )
-def update_bar_plot(value):
-    return create_bar_plot(value[0], value[1])
+def update_bar_plot(value, earthquake):
+    return create_bar_plot(value[0], value[1], earthquake[0], earthquake[1])
 
 # App callback for navbar
 @app.callback(
