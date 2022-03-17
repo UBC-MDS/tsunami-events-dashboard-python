@@ -35,8 +35,7 @@ def create_map_plot(year_start, year_end, countries,
                                              magnitude_start, magnitude_end)
     mean_count = tsunami_events.groupby("country").size().mean()
 
-
-    map_click = alt.selection_multi(fields=['name'])
+    map_click = alt.selection_single(fields=['name'])
     map = (
         alt.Chart(world_map)
         .mark_geoshape(stroke="grey", strokeWidth=0.3)
