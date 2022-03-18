@@ -6,9 +6,9 @@ from components.map_plot import create_map_plot
 from components.scatter_plot import create_scatter_plot
 from components.bar_plot import create_bar_plot
 
-tsunami_df=pd.read_csv('data/processed/tsunami-events.csv')
+tsunami_events=pd.read_csv('data/processed/tsunami-events.csv')
 
-countries=tsunami_df['country'].dropna().unique()
+countries=tsunami_events['country'].dropna().unique()
 country_list=sorted(list(countries))
 
 app=dash.Dash(
@@ -111,7 +111,7 @@ app.layout=dbc.Container([
             dcc.RangeSlider(
                 min=1800, 
                 max=2022,
-                value=[tsunami_df['year'].min(), tsunami_df['year'].max()],
+                value=[tsunami_events['year'].min(), tsunami_events['year'].max()],
                 marks=None, 
                 id='year_slider',
                 allowCross=False, 
@@ -123,7 +123,7 @@ app.layout=dbc.Container([
             dcc.RangeSlider(
                 min=5,
                 max=9.5,
-                value=[tsunami_df['earthquake_magnitude'].min(), tsunami_df['earthquake_magnitude'].max()],
+                value=[tsunami_events['earthquake_magnitude'].min(), tsunami_events['earthquake_magnitude'].max()],
                 marks=None,
                 id='magnitude_slider',
                 allowCross=False, 
