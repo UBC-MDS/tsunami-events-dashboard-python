@@ -3,7 +3,7 @@ import pandas as pd
 
 PROCESSED_DATA_PATH = "data/processed/tsunami-events.csv"
 
-def preprocess(year_start, year_end):
+def preprocess(year_start, year_end, earthquake_lower, earthquake_upper):
     """The function to return the processed dataframe with a new index column
     and combination column of the country and year. Also filters the df
     based on the callback year slider for tsunamis occurring between
@@ -26,11 +26,12 @@ def preprocess(year_start, year_end):
     df['combine'] = df['country'].astype(str) + ', ' + df['year'].astype(str)
     df = df.query('tsunami_intensity > 0')
     df = df.query(f"{year_start} <= year <= {year_end}")
+    df = df.query(f"{earthquake_lower} <= earthquake_magnitude <= {earthquake_upper}")
     df = df.sort_values(by=['tsunami_intensity'], ascending = False)
     df = df[0:10]
     return df
 
-def create_bar_plot(year_start, year_end):
+def create_bar_plot(year_start, year_end, earthquake_lower, earthquake_upper):
     """The function to create a bar graph of the highest intensity
     tsunamis between the year_start and year_end.
     Parameters
@@ -45,7 +46,7 @@ def create_bar_plot(year_start, year_end):
         horizontal bar graph of greatest intensity tsunamis with tooltip
         to glean further information when hovering over each bar.
     """
-    df = preprocess(year_start, year_end)
+    df = preprocess(year_start, year_end, earthquake_lower, earthquake_upper)
     chart = alt.Chart(df).mark_bar().encode(
         x=alt.X('tsunami_intensity:Q', title = 'Tsunami Intensity', scale=alt.Scale(domain=(0, 12))),
         y=alt.Y('tsunami_instance:N', sort = '-x', title = 'Country', axis = alt.Axis(labelExpr="datum.country")),
