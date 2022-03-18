@@ -121,7 +121,7 @@ app.layout=dbc.Container([
             html.Br(),
             html.H6('Earthquake Magnitude of Interest', className='form-label'),
             dcc.RangeSlider(
-                min=5,
+                min=3.7,
                 max=9.5,
                 value=[tsunami_events['earthquake_magnitude'].min(), tsunami_events['earthquake_magnitude'].max()],
                 marks=None,
