@@ -60,7 +60,7 @@ def create_map_plot(year_start, year_end, countries,
         )
         .add_selection(map_click)
         .project("naturalEarth1")
-        .properties(width=730, height=350)
+        .properties(width=1000, height=490)
     )
 
     tsunami_events["legend"] = "Tsunami Origin"
