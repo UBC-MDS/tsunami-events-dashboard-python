@@ -35,11 +35,11 @@ def create_scatter_plot(year_start=1900, year_end=2022, magnitude_start=5, magni
     chart = alt.Chart(
         get_data(year_start, year_end, magnitude_start, magnitude_end, countries)
     ).mark_point(opacity=0.65, size=20).encode(
-        x=alt.X('earthquake_magnitude',
+        x=alt.X('earthquake_magnitude:Q',
                 title='Earthquake Magnitude (Richter Scale)',
                 scale=alt.Scale(domain=(5.5, 10)),
                 axis=alt.Axis(grid=False)),
-        y=alt.Y('total_deaths',
+        y=alt.Y('total_deaths:Q',
                 title='Total Deaths (log-scale), per Event',
                 scale=alt.Scale(type='log', domainMin=0.1),
                 axis=alt.Axis(
@@ -49,13 +49,13 @@ def create_scatter_plot(year_start=1900, year_end=2022, magnitude_start=5, magni
                         alt.value('black')
                     )
                 )),
-        color=alt.Color('country',
+        color=alt.Color('country:N',
                         legend=alt.Legend(title="Countries (up to Top 10)")),
         tooltip=[
-            alt.Tooltip("year", title="Year"),
-            alt.Tooltip("mercalli_intensity", title="Mercalli Intensity"),
-            alt.Tooltip("country", title="Country"),
-            alt.Tooltip("total_deaths", title="Total Deaths")]
+            alt.Tooltip("year:Q", title="Year"),
+            alt.Tooltip("mercalli_intensity:O", title="Mercalli Intensity"),
+            alt.Tooltip("country:N", title="Country"),
+            alt.Tooltip("total_deaths:Q", title="Total Deaths")]
     ).interactive(
     ).properties(
         width=200, height=175

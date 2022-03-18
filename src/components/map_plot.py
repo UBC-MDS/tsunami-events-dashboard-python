@@ -55,7 +55,7 @@ def create_map_plot(year_start, year_end, countries,
                 alt.ColorValue("white")
             ),
             tooltip=[alt.Tooltip("name:N", title="Country"),
-                        alt.Tooltip("count:Q", title="Total Tsunami Hits")],
+                     alt.Tooltip("count:Q", title="Total Tsunami Hits")],
             opacity=alt.condition(map_click, alt.value(1), alt.value(0.2))
         )
         .add_selection(map_click)
@@ -69,15 +69,15 @@ def create_map_plot(year_start, year_end, countries,
         alt.Chart(tsunami_events)
         .mark_circle(size=5, opacity=0.35)
         .encode(
-            latitude="latitude",
-            longitude="longitude",
+            latitude="latitude:Q",
+            longitude="longitude:Q",
             color=alt.Color("legend:N",
                             scale=alt.Scale(range=["red"]),
                             legend=alt.Legend(title="",
                                               orient='top-left')),
-            tooltip=[alt.Tooltip("earthquake_magnitude",
+            tooltip=[alt.Tooltip("earthquake_magnitude:Q",
                                  title="Earthquake Magnitude"),
-                     alt.Tooltip("year",
+                     alt.Tooltip("year:Q",
                                  title="Event Year")]
         )
         .properties(width=300, height=100)

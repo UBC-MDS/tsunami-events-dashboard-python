@@ -10,6 +10,10 @@ tsunami_events = pd.read_csv('data/processed/tsunami-events.csv')
 
 countries = tsunami_events['country'].dropna().unique()
 country_list = sorted(list(countries))
+year_min = tsunami_events['year'].min()
+year_max = tsunami_events['year'].max()
+magnitude_min = tsunami_events['earthquake_magnitude'].min()
+magnitude_max = tsunami_events['earthquake_magnitude'].max()
 
 app = dash.Dash(
     __name__, external_stylesheets=[dbc.themes.QUARTZ]
@@ -68,8 +72,11 @@ world_plot_card=dbc.Card(
         html.Iframe(
             id='map_plot',
             style={'border-width': '0', 'height': '390px', 'width': '100%'},
-            srcDoc=create_map_plot(year_start=1800, year_end=2022, countries=[],
-                                   magnitude_start=3, magnitude_end=10))
+            srcDoc=create_map_plot(year_start=year_min,
+                                   year_end=year_max,
+                                   countries=[],
+                                   magnitude_start=magnitude_min,
+                                   magnitude_end=magnitude_max))
         ], style={'padding': '15px', 'padding-bottom': '0px'}
     ),
     style={'padding': 0}
@@ -82,8 +89,11 @@ scatter_plot_card=dbc.Card(
         html.Iframe(
             id='scatter_plot',
             style={'border-width': '0', 'height': '250px','width': '100%'},
-            srcDoc=create_scatter_plot(year_start=1800, year_end=2022,
-                                       magnitude_start=3, magnitude_end=10, countries=[]) 
+            srcDoc=create_scatter_plot(year_start=year_min,
+                                       year_end=year_max,
+                                       countries=[],
+                                       magnitude_start=magnitude_min,
+                                       magnitude_end=magnitude_max) 
         )], style={'padding': '15px', 'padding-bottom': '0px'}
     ),
     style={'padding': 0}
@@ -96,8 +106,10 @@ bar_chart_card=dbc.Card(
         html.Iframe(
             id='bar_plot',
             style={'border-width': '0', 'height': '250px','width': '100%'},
-            srcDoc=create_bar_plot(year_start=1800, year_end=2022,
-                                   magnitude_start=3, magnitude_end=10)
+            srcDoc=create_bar_plot(year_start=year_min,
+                                   year_end=year_max,
+                                   magnitude_start=magnitude_min,
+                                   magnitude_end=magnitude_max)
         )], style={'padding': '15px', 'padding-bottom': '0px'}
     ),
     style={'padding': 0}
@@ -109,11 +121,11 @@ app.layout=dbc.Container([
         dbc.Col([
             html.H5('Years and Countries Selection', className='form-label'),
             html.Hr(),
-            html.H6('Years of Interest (1802 - 2022)', className='form-label'),
+            html.H6(f'Years of Interest ({year_min} - {year_max})', className='form-label'),
             dcc.RangeSlider(
-                min=1800, 
-                max=2022,
-                value=[tsunami_events['year'].min(), tsunami_events['year'].max()],
+                min=year_min, 
+                max=year_max,
+                value=[year_min, year_max],
                 marks=None, 
                 id='year_slider',
                 allowCross=False, 
@@ -123,10 +135,9 @@ app.layout=dbc.Container([
             html.Br(),
             html.H6('Earthquake Magnitude of Interest', className='form-label'),
             dcc.RangeSlider(
-                min=3,
-                max=10,
-                value=[tsunami_events['earthquake_magnitude'].min(),
-                       tsunami_events['earthquake_magnitude'].max()],
+                min=magnitude_min,
+                max=magnitude_max,
+                value=[magnitude_min, magnitude_max],
                 marks=None,
                 id='magnitude_slider',
                 allowCross=False, 
@@ -179,15 +190,15 @@ app.layout=dbc.Container([
 @app.callback(
     Output('map_plot', 'srcDoc'),
     Input('year_slider', 'value'),
+    Input('magnitude_slider', 'value'),
     Input('country_select', 'value'),
-    Input('magnitude_slider', 'value')
 )
 def update_map_plot(years, magnitudes, countries):
-    return create_map_plot(year_start = years[0],
-                           year_end = years[1],
-                           magnitude_start = magnitudes[0],
-                           magnitude_end = magnitudes[1],
-                           countries = countries)
+    return create_map_plot(year_start=years[0],
+                           year_end=years[1],
+                           magnitude_start=magnitudes[0],
+                           magnitude_end=magnitudes[1],
+                           countries=countries)
 
 # App callback for scatter_plot
 @app.callback(
