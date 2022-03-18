@@ -58,7 +58,7 @@ def create_scatter_plot(year_start=1900, year_end=2022, magnitude_start=5, magni
             alt.Tooltip("total_deaths:Q", title="Total Deaths")]
     ).interactive(
     ).properties(
-        width=200, height=175
+        width=255, height=300
     ).configure_legend(
         titleFontSize=10,
         labelFontSize=7

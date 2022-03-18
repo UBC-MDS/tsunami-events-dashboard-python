@@ -71,7 +71,7 @@ world_plot_card=dbc.Card(
         style={'margin-bottom': '0px'}),
         html.Iframe(
             id='map_plot',
-            style={'border-width': '0', 'height': '390px', 'width': '100%'},
+            style={'border-width': '0', 'height': '100%', 'width': '100%','padding-right': '0'},
             srcDoc=create_map_plot(year_start=year_min,
                                    year_end=year_max,
                                    countries=[],
@@ -88,7 +88,7 @@ scatter_plot_card=dbc.Card(
         style={'margin-bottom': '0px'}),
         html.Iframe(
             id='scatter_plot',
-            style={'border-width': '0', 'height': '250px','width': '100%'},
+            style={'border-width': '0', 'height': '360px','width': '100%'},
             srcDoc=create_scatter_plot(year_start=year_min,
                                        year_end=year_max,
                                        countries=[],
@@ -105,7 +105,7 @@ bar_chart_card=dbc.Card(
         style={'margin-bottom': '0px'}),
         html.Iframe(
             id='bar_plot',
-            style={'border-width': '0', 'height': '250px','width': '100%'},
+            style={'border-width': '0', 'height': '360px','width': '100%'},
             srcDoc=create_bar_plot(year_start=year_min,
                                    year_end=year_max,
                                    magnitude_start=magnitude_min,
@@ -119,6 +119,7 @@ app.layout=dbc.Container([
     navbar,
     dbc.Row([
         dbc.Col([
+            html.Br(),
             html.H5('Years and Countries Selection', className='form-label'),
             html.Hr(),
             html.H6(f'Years of Interest ({year_min} - {year_max})', className='form-label'),
@@ -165,16 +166,16 @@ app.layout=dbc.Container([
         dbc.Col([
             dbc.Row([
                 world_plot_card
-            ], style={'margin': 'auto', 'width': '820px', 'padding':'0px'}),
-            html.Br(),
+            ], style={'margin': 'auto', 'width': '75vw', 'height': '600px', 'padding':'20px',
+            'padding-bottom' : '10px'}),
             dbc.Row([
                 dbc.Col([
                     scatter_plot_card
-                ], style={'margin': 'auto', 'width': '400px'}),
+                ], style={'height': '600px'}),
                 dbc.Col([
                     bar_chart_card
-                ], style={'margin': 'auto', 'width': '400px'})
-            ],style={'margin': 'auto', 'width': '1020px'})
+                ], style={'height': '600px'})
+            ],style={'margin': 'auto', 'width': '75vw', 'height': '600px', 'padding':'10px'})
         ],
         style=CONTENT_STYLE)
     ])
@@ -182,8 +183,7 @@ app.layout=dbc.Container([
     style={
         'backgroundColor': 'black',
         'padding': '0px',
-        'height': '100vh',
-        "overflow": "hidden"
+        'height': '150vh'
 })
 
 # App callback for map_plot
@@ -203,7 +203,7 @@ def update_map_plot(years, magnitudes, countries):
 # App callback for scatter_plot
 @app.callback(
     Output('scatter_plot', 'srcDoc'),
-    Input('year_slider', 'value'),
+    Input('year_slider', 'va4lue'),
     Input('magnitude_slider', 'value'),
     Input('country_select', 'value')
 )
