@@ -95,7 +95,7 @@ bar_chart_card=dbc.Card(
         html.Iframe(
             id='bar_plot',
             style={'border-width': '0', 'height': '250px','width': '100%'},
-            srcDoc=create_bar_plot(year_start=1800, year_end=2022)
+            srcDoc=create_bar_plot(year_start=1800, year_end=2022, earthquake_lower= 0, earthquake_upper=9.5)
         )], style={'padding': '15px', 'padding-bottom': '0px'}
     ),
     style={'padding': 0}
@@ -107,7 +107,7 @@ app.layout=dbc.Container([
         dbc.Col([
             html.H5('Years and Countries Selection', className='form-label'),
             html.Hr(),
-            html.H6('Years of Interest (1800 - 2022)', className='form-label'),
+            html.H6('Years of Interest (1802 - 2022)', className='form-label'),
             dcc.RangeSlider(
                 min=1800, 
                 max=2022,
@@ -140,7 +140,7 @@ app.layout=dbc.Container([
                 className='text-dark'),
             html.Hr(),
             html.P(
-                "A data visualisation app that allows viewers to observe the number"
+                "A data visualisation app that allows viewers to observe the number "
                 "and intensity of tsunamis based on years and countries",
                 className='form-label'
             )
@@ -199,13 +199,11 @@ def update_scatter_plot(value, value_magnitude, value_country):
 # App callback for bar_plot
 @app.callback(
     Output('bar_plot', 'srcDoc'),
-    # Input('magnitude_slider', 'value'),
-    Input('year_slider', 'value')
+    Input('year_slider', 'value'),
+    Input('magnitude_slider', 'value')
 )
-def update_bar_plot(value):
-    return create_bar_plot(value[0], value[1])
-# def update_bar_plot(value, value_magnitude):
-    return create_bar_plot(value[0], value[1], value_magnitude[0], value_magnitude[1])
+def update_bar_plot(value, earthquake):
+    return create_bar_plot(value[0], value[1], earthquake[0], earthquake[1])
 
 # App callback for navbar
 @app.callback(
