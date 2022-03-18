@@ -119,7 +119,7 @@ app.layout=dbc.Container([
                             'always_visible': True}),
             html.Br(),
             html.Br(),
-            html.H6('Tsunami Magnitude of Interest', className='form-label'),
+            html.H6('Earthquake Magnitude of Interest', className='form-label'),
             dcc.RangeSlider(
                 min=5,
                 max=9.5,
