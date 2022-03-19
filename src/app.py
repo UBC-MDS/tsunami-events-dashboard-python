@@ -63,6 +63,13 @@ navbar=dbc.Navbar(
     ),
     color="dark",
     dark=True,
+    style={
+        "position": "fixed",
+        "top": "0",
+        "left": "0",
+        "z-index": "9999999",
+        "width": "100%"
+    }
 )
 
 world_plot_card=dbc.Card(
@@ -166,24 +173,29 @@ app.layout=dbc.Container([
         dbc.Col([
             dbc.Row([
                 world_plot_card
-            ], style={'margin': 'auto', 'width': '75vw', 'height': '600px', 'padding':'20px',
+            ], style={'margin': 'auto', 'width': '1080px', 'height': '560px', 'padding':'20px',
             'padding-bottom' : '10px'}),
             dbc.Row([
                 dbc.Col([
                     scatter_plot_card
-                ], style={'height': '600px'}),
+                ], style={'height': '600px', 'margin-right': '5px'}),
                 dbc.Col([
                     bar_chart_card
-                ], style={'height': '600px'})
-            ],style={'margin': 'auto', 'width': '75vw', 'height': '600px', 'padding':'10px'})
+                ], style={'height': '600px', 'padding': '0', 'margin-left': '5px'})
+            ],style={'margin': 'auto', 'width': '1080px', 'height': '600px',
+                     'margin-top': '15px', 'padding': '0 20px'})
         ],
         style=CONTENT_STYLE)
-    ])
+    ], style={
+        '--bs-gutter-x': '0'
+    })
 ], fluid=True,
     style={
         'backgroundColor': 'black',
         'padding': '0px',
-        'height': '150vh'
+        'height': '100%',
+        'min-height': '100vh',
+        'margin-top': '62px'
 })
 
 # App callback for map_plot
@@ -203,12 +215,16 @@ def update_map_plot(years, magnitudes, countries):
 # App callback for scatter_plot
 @app.callback(
     Output('scatter_plot', 'srcDoc'),
-    Input('year_slider', 'va4lue'),
+    Input('year_slider', 'value'),
     Input('magnitude_slider', 'value'),
     Input('country_select', 'value')
 )
 def update_scatter_plot(value, value_magnitude, value_country):
-    return create_scatter_plot(value[0], value[1], value_magnitude[0], value_magnitude[1], value_country)
+    return create_scatter_plot(value[0],
+                               value[1],
+                               value_magnitude[0],
+                               value_magnitude[1],
+                               value_country)
 
 # App callback for bar_plot
 @app.callback(
@@ -231,4 +247,4 @@ def toggle_navbar_collapse(n, is_open):
     return is_open
 
 if __name__ == '__main__': 
-    app.run_server(debug=True)
+    app.run_server()
