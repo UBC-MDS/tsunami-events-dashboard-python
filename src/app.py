@@ -178,10 +178,11 @@ app.layout=dbc.Container([
             dbc.Row([
                 dbc.Col([
                     scatter_plot_card
-                ], style={'height': '600px', 'margin-right': '5px'}),
+                ], style={'height': '600px', 'margin-right': '11px', '--bs-gutter-x': '0'}),
                 dbc.Col([
                     bar_chart_card
-                ], style={'height': '600px', 'padding': '0', 'margin-left': '5px'})
+                ], style={'height': '600px', 'padding': '0', 'margin-left': '11px',
+                          '--bs-gutter-x': '0'})
             ],style={'margin': 'auto', 'width': '1080px', 'height': '600px',
                      'margin-top': '15px', 'padding': '0 20px'})
         ],
@@ -194,8 +195,10 @@ app.layout=dbc.Container([
         'backgroundColor': 'black',
         'padding': '0px',
         'height': '100%',
-        'min-height': '100vh',
-        'margin-top': '62px'
+        'min-height': '150vh',
+        'margin-top': '62px',
+        'width': '100%',
+        'min-width': 'calc(100vh - 40rem)'
 })
 
 # App callback for map_plot
