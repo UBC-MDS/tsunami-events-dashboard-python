@@ -60,7 +60,7 @@ def create_bar_plot(year_start, year_end, magnitude_start, magnitude_end):
         y=alt.Y('tsunami_instance:O', sort = '-x', title = 'Country', axis = alt.Axis(labelExpr="datum.country")),
         color=alt.Color('country:O', legend=alt.Legend(title="Countries")),
         tooltip=("country:N", "location_name:N", "tsunami_intensity:Q", "earthquake_magnitude:Q", "year:Q", "month:O")
-        ).properties(width=300, height=300)
+        ).properties(width=280, height=285)
     
     chart.configure_legend(padding=10,
                             cornerRadius=10,
